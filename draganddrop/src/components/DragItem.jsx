@@ -12,15 +12,14 @@ const DragItem = ({ type, name }) => {
       onDragStart={onDragStart}
       style={{
         cursor: 'grab',
-        padding: '10px',
-        margin: '5px',
         fontSize: '20px',
         border: '1px solid #ccc',
         borderRadius: '5px',
-        backgroundColor: '#f0f0f0',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        width: '80px', // Set fixed width for rectangle
+        height: '80px', // Set fixed height for rectangle
       }}
     >
       {name}

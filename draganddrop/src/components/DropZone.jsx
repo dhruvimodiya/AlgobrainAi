@@ -9,7 +9,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 // Import custom nodes
-import CircleNode from './CircleNode';
+// import CircleNode from './CircleNode';
 import RectangleNode from './RectangleNode';
 import TriangleNode from './TriangleNode'; // Add TriangleNode
 import HexagonNode from './HexagonNode';   // Add HexagonNode
@@ -17,7 +17,7 @@ import SquareNode from './SquareNode';     // Add SquareNode
 
 // Define custom node types
 const nodeTypes = {
-  circle: CircleNode,
+  // circle: CircleNode,
   rectangle: RectangleNode,
   triangle: TriangleNode, // Add TriangleNode type
   hexagon: HexagonNode,   // Add HexagonNode type

@@ -4,10 +4,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import DragItem from "./components/DragItem";
 import DropZone from "./components/DropZone";
 import { BiRectangle } from "react-icons/bi";
-import { GiCircle } from "react-icons/gi"; // Import circle icon
-import { IoTriangleOutline } from "react-icons/io5";
-import { MdHexagon } from "react-icons/md";  // Import hexagon icon
-import { FaSquare } from "react-icons/fa";  // Import square icon
+import { MdPermMedia } from "react-icons/md";
 
 const App = () => {
   const [droppedItems, setDroppedItems] = useState([]);
@@ -39,11 +36,34 @@ const App = () => {
           }}
         >
           <h2>Drag Items</h2>
-          <DragItem type="rectangle" name={<BiRectangle />} />
+          {/* <DragItem type="rectangle" name={<BiRectangle />} />
           <DragItem type="circle" name={<GiCircle />} />
           <DragItem type="triangle" name={<IoTriangleOutline />} />
-          <DragItem type="hexagon" name={<MdHexagon />} />
-          <DragItem type="square" name={<FaSquare />} /> {/* Add Square */}
+          <DragItem type="hexagon" name={<MdHexagon />} /> */}
+
+          {/* <DragItem type="square" name={<FaSquare />} /> Add Square */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "10px", // Space between items
+            }}
+          >
+            <div style={{ width: "100px", textAlign: "center" }}>
+              <DragItem type="rectangle" name={<BiRectangle />} />
+              <p>Flow-Start</p>
+            </div>
+            <div style={{ width: "100px", textAlign: "center" }}>
+              <DragItem type="square" name={<MdPermMedia />} />
+              <p>Media-Buttons</p>
+            </div>
+            <div style={{ width: "100px", textAlign: "center" }}>
+              <DragItem type="triangle" name={<MdPermMedia />} />
+              <p>Request Intervention</p>
+            </div>
+            {/* Add more items here as needed */}
+          </div>
         </div>
         
         {/* Main content area with DropZone */}
