@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'; // Import Google Maps components
 
-// Define styles for fixed height
+// Define styles for dynamic adjustment
 const nodeStyle = (isDeleted) => ({
-  width: '240px',
-  height: isDeleted ? '0px' : '200px', // Set a fixed height
-  display: isDeleted ? 'none' : 'flex', // Hide node when deleted
-  flexDirection: 'column',
-  borderRadius: '8px',
-  boxShadow: '0px  4px 8px rgba(0, 128, 0, 0.3)',
-  position: 'relative',
-  backgroundColor: isDeleted ? 'transparent' : 'white',
-  transition: 'box-shadow 0.3s', // Add a smooth transition for hover effects
-});
+    width: '240px',
+    height: isDeleted ? '0px' : '200px', // Set a fixed height
+    display: isDeleted ? 'none' : 'flex', // Hide node when deleted
+    flexDirection: 'column',
+    borderRadius: '8px',
+    boxShadow: '0px  4px 8px rgba(0, 128, 0, 0.3)',
+    position: 'relative',
+    backgroundColor: isDeleted ? 'transparent' : 'white',
+    transition: 'box-shadow 0.3s', // Add a smooth transition for hover effects
+  });
 
 const flowStartStyle = {
   borderRadius: '4px',
@@ -27,6 +28,8 @@ const flowStartStyle = {
   position: 'relative',
 };
 
+
+
 const iconStyle = {
   marginLeft: '20px', // Reduced margin for a cleaner look
 };
@@ -38,23 +41,11 @@ const deleteIconStyle = (isHovered) => ({
   transition: 'opacity 0.3s', // Smooth fade-in/out
 });
 
-const SquareNode = ({ data }) => {
-  const [text, setText] = useState('');
+const MapNode = ({ data }) => {
+  const [mapPosition, setMapPosition] = useState({ lat: 37.7749, lng: -122.4194 }); // Default map position
   const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
   const [isHovered, setIsHovered] = useState(false); // Manage hover state
 
-  // Handle image upload
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result); // Set the uploaded image
-        console.log(`Uploaded image: ${file.name}`); // Log image name
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   // Handle node delete
   const handleDelete = () => {
@@ -70,21 +61,23 @@ const SquareNode = ({ data }) => {
       {/* Flow-Start section with handles for connections */}
       <div style={flowStartStyle}>
         <p>
-          <MdPermMedia style={iconStyle} /> Flow Start
+          <MdPermMedia style={iconStyle} /> Map Node
         </p>
         <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
       </div>
 
-      {/* Hidden file input for selecting an image */}
-      <input
-        type="file"
-        id="fileInput"
-        style={{ display: 'none' }}
-        accept="image/*"
-        onChange={handleImageUpload}
-      />
+      {/* Map section */}
+      <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
+        <GoogleMap
+          mapContainerStyle={{ height: '200px', width: '100%' }}
+          center={mapPosition}
+          zoom={10}
+        >
+          <Marker position={mapPosition} />
+        </GoogleMap>
+      </LoadScript>
     </div>
   );
 };
 
-export default SquareNode;
+export default MapNode;

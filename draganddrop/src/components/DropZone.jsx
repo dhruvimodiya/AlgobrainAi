@@ -14,6 +14,13 @@ import RectangleNode from './RectangleNode';
 import TriangleNode from './TriangleNode'; // Add TriangleNode
 import HexagonNode from './HexagonNode';   // Add HexagonNode
 import SquareNode from './SquareNode';     // Add SquareNode
+import ReqIntervention from './ReqIntervention';
+import MapNode from './MapNode';
+import LinkNode from './LinkNode';
+import VideoNode from './VideoNode';
+import PdfNode from './PdfNode';
+import ImageNode from './ImageNode';
+import ShippingNode from './ShippingNode';
 
 // Define custom node types
 const nodeTypes = {
@@ -22,6 +29,13 @@ const nodeTypes = {
   triangle: TriangleNode, // Add TriangleNode type
   hexagon: HexagonNode,   // Add HexagonNode type
   square: SquareNode,     // Add SquareNode type
+  ReqIntervention:ReqIntervention,
+  MapNode:MapNode,
+  LinkNode:LinkNode,
+  VideoNode:VideoNode,
+  PdfNode:PdfNode,
+  ImageNode:ImageNode,
+  ShippingNode:ShippingNode,
 };
 
 const initialNodes = [];

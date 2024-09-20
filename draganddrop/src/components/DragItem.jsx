@@ -18,8 +18,8 @@ const DragItem = ({ type, name }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '80px', // Set fixed width for rectangle
-        height: '80px', // Set fixed height for rectangle
+        width: '70px', // Set fixed width for rectangle
+        height: '70px', // Set fixed height for rectangle
       }}
     >
       {name}

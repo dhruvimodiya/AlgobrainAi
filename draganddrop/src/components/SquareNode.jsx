@@ -1,116 +1,117 @@
 import React, { useState } from 'react';
-import { Handle, Position } from 'reactflow';
-import { MdPermMedia } from "react-icons/md";
+import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
 
-// Define styles as objects for better readability and maintainability
+// Base values
 const baseNodeHeight = 300; // Base height of the node
-const buttonHeightIncrement = 40; // Height added per new button
+const buttonHeightIncrement = 20; // Height added per new button
 
-const nodeStyle = (buttonCount) => ({
-  width: '180px',
-  height: `${baseNodeHeight + buttonHeightIncrement * buttonCount}px`, // Dynamically increase height
-  backgroundColor: 'white',
-  display: 'flex',
+// Define styles for dynamic adjustment
+const nodeStyle = (buttonCount, isDeleted) => ({
+  width: '240px',
+  height: isDeleted ? '0px' : `${baseNodeHeight + buttonHeightIncrement * buttonCount}px`, // Dynamically increase height based on button count
+  display: isDeleted ? 'none' : 'flex', // Hide node when deleted
   flexDirection: 'column',
-  border: '1px solid #333',
   borderRadius: '8px',
-  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+  boxShadow: '0px  4px 8px rgba(0, 128, 0, 0.3)',
   position: 'relative',
-  padding: '8px',
-  justifyContent: 'space-between', // Ensures consistent spacing between sections
+  backgroundColor: isDeleted ? 'transparent' : 'white',
+  transition: 'box-shadow 0.3s', // Add a smooth transition for hover effects
 });
 
 const flowStartStyle = {
-  width: '100%',
-  height: '30px',
   borderRadius: '4px',
-  fontSize: '10px',
-  fontWeight: 'bold',
-  border: '1px solid black',
+  color: 'green',
+  fontSize: '12px',
   display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  backgroundColor: '#F0F0F0',
-  marginBottom: '8px',
-  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)', // Shadow for the Flow-Start section
-};
-
-const iconStyle = {
-  marginRight: '4px', // Reduced margin for a cleaner look
+  justifyContent: 'space-between', // Add space between title and delete icon
+  margin: '10px',
+  fontWeight: 'bold',
+  backgroundColor: '#F8F8F8',
+  borderLeft: '12px solid green',
+  position: 'relative',
 };
 
 const imgStyle = {
-  width: '100%',
-  height: '100px', // Adjusted height for better balance
-  border: '1px solid black',
+  width: '91%',
+  height: '100px',
   borderRadius: '4px',
-  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
-  marginBottom: '8px',
-  cursor: 'pointer', // Indicates the image is clickable
+  cursor: 'pointer',
+  margin: '10px',
 };
 
 const welcomeStyle = {
+  width: '93%',
+  height: '50px',
   fontSize: '12px',
-  padding: '8px', // Adjusted padding for better text input spacing
   borderRadius: '4px',
-  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)', // Slightly reduced shadow for a cleaner look
-  marginBottom: '8px',
-  border: '1px solid #ccc', // Added border for better separation
   display: 'flex',
   flexDirection: 'column',
+  marginLeft: '10px',
 };
 
 const textAreaStyle = {
-  width: '100%',
-  height: '100%', // Adjusted to fill the parent container
+  width: '92%',
+  height: '100%',
   borderRadius: '4px',
-  padding: '8px', // Added padding for better text input experience
-  fontSize: '12px',
-  border: '1px solid #ddd',
+  padding: '8px',
+  fontSize: '10px',
   resize: 'none',
-  boxSizing: 'border-box', // Ensures padding is included in the total width/height
-  backgroundColor: '#fafafa', // Light background for better readability
-  color: '#333', // Dark text for better contrast
+  color: 'black',
+  border: 'none',
+  backgroundColor: '#F8F8F8',
+  outline: 'none',
+  marginBottom: '8px ',
 };
 
 const addButtonStyle = {
-  backgroundColor: 'green',
-  color: 'white',
-  border: 'none',
-  borderRadius: '4px',
+  width: '83%',
+  height: '8%',
+  color: 'green',
+  border: '1px solid green',
+  borderRadius: '15px',
   padding: '6px',
   cursor: 'pointer',
-  marginBottom: '8px',
-  fontSize: '12px',
+  marginBottom: '10px',
+  fontSize: '10px',
+  marginLeft: '20px',
+  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
 };
 
 const addedButtonStyle = {
-  backgroundColor: 'green',
-  color: 'white',
-  border: '1px solid #333',
-  borderRadius: '4px',
+  width: '78%',
+  height: '5%',
+  color: 'green',
+  border: '1px solid green',
+  borderRadius: '15px',
   padding: '6px',
-  marginBottom: '4px',
-  fontSize: '12px',
+  cursor: 'pointer',
+  marginBottom: '8px',
+  fontSize: '10px',
+  marginLeft: '20px',
+  display: 'flex',
+  justifyContent: 'center',
+  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
 };
 
-const notificationStyle = {
-  backgroundColor: '#4CAF50', // Green background for success message
-  color: 'white',
-  padding: '5px',
-  borderRadius: '4px',
-  marginBottom: '8px',
-  textAlign: 'center',
-  fontSize: '12px',
+const iconStyle = {
+  marginLeft: '20px', // Reduced margin for a cleaner look
 };
+
+const deleteIconStyle = (isHovered) => ({
+  cursor: 'pointer',
+  color: 'green',
+  opacity: isHovered ? 1 : 0, // Show icon only when hovered
+  transition: 'opacity 0.3s', // Smooth fade-in/out
+});
 
 const SquareNode = ({ data }) => {
-  const [image, setImage] = useState("https://www.seekpng.com/png/detail/130-1300875_click-here-button-green-click-here-button-png.png");
+  const [image, setImage] = useState("https://t3.ftcdn.net/jpg/05/95/78/78/360_F_595787852_efGpIfJmAJxcof7PBsQsDmirsZ3R8o50.jpg");
   const [buttons, setButtons] = useState([]);
-  const [notification, setNotification] = useState('');
   const [text, setText] = useState('');
+  const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
+  const [isHovered, setIsHovered] = useState(false); // Manage hover state
 
-  // Function to handle the image upload
+  // Handle image upload
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -123,46 +124,44 @@ const SquareNode = ({ data }) => {
     }
   };
 
-  // Function to trigger the file input dialog
+  // Trigger file input dialog
   const triggerFileInput = () => {
     document.getElementById('fileInput').click();
   };
 
-  // Function to add a new button
+  // Add new button
   const addNewButton = () => {
     if (buttons.length < 3) {
       setButtons([...buttons, `Button ${buttons.length + 1}`]);
-      setNotification('New button added!');
-      // Clear the notification after 3 seconds
-      setTimeout(() => setNotification(''), 3000);
     }
   };
 
-  // Function to handle text area changes
+  // Handle text area input
   const handleTextChange = (event) => {
     setText(event.target.value);
     console.log(`Text area input: ${event.target.value}`); // Log text area input
   };
 
+  // Handle node delete
+  const handleDelete = () => {
+    setIsDeleted(true); // Set node as deleted
+  };
+
   return (
-    <div style={nodeStyle(buttons.length)}>
-      
-      {/* Notification message */}
-      {notification && (
-        <div style={notificationStyle}>
-          {notification}
-        </div>
-      )}
-      
+    <div
+      style={nodeStyle(buttons.length, isDeleted)}
+      onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
+      onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
+    >
       {/* Flow-Start section with handles for connections */}
       <div style={flowStartStyle}>
-        <Handle type="target" position={Position.Right} id="flowStartTarget" />
-        <MdPermMedia style={iconStyle} />
-        <p>Media + Buttons</p>
-        {/* Handle for connection from the Flow-Start section */}
+        <p>
+          <MdPermMedia style={iconStyle} /> Media + Buttons
+        </p>
+        <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
       </div>
-      
-      {/* Image section, clicking on it triggers the file input */}
+
+      {/* Image section */}
       <div style={imgStyle} onClick={triggerFileInput}>
         <img src={image} alt="Uploaded" style={{ height: '100%', width: '100%' }} />
       </div>
@@ -186,7 +185,7 @@ const SquareNode = ({ data }) => {
         ></textarea>
       </div>
 
-      {/* Dynamic buttons, limit to 3 */}
+      {/* Dynamic buttons */}
       {buttons.map((button, index) => (
         <div key={index} style={addedButtonStyle}>
           {button}
@@ -199,9 +198,6 @@ const SquareNode = ({ data }) => {
           Add Button
         </button>
       )}
-
-      
-      
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
+import { Handle } from 'reactflow';
 
 // Define styles for fixed height
 const nodeStyle = (isDeleted) => ({
@@ -25,6 +26,30 @@ const flowStartStyle = {
   backgroundColor: '#F8F8F8',
   borderLeft: '12px solid green',
   position: 'relative',
+};
+
+const welcomeStyle = {
+  width: '93%',
+  height: '135px',
+  fontSize: '12px',
+  borderRadius: '4px',
+  display: 'flex',
+  flexDirection: 'column',
+  marginLeft: '10px',
+};
+
+const textAreaStyle = {
+  width: '92%',
+  height: '120px', // Increased height
+  borderRadius: '4px',
+  padding: '8px',
+  fontSize: '10px',
+  resize: 'none',
+  color: 'black',
+  border: 'none',
+  backgroundColor: '#F8F8F8',
+  outline: 'none',
+  marginBottom: '8px',
 };
 
 const iconStyle = {
@@ -56,6 +81,12 @@ const SquareNode = ({ data }) => {
     }
   };
 
+  // Handle text area input
+  const handleTextChange = (event) => {
+    setText(event.target.value);
+    console.log(`Text area input: ${event.target.value}`); // Log text area input
+  };
+
   // Handle node delete
   const handleDelete = () => {
     setIsDeleted(true); // Set node as deleted
@@ -70,7 +101,7 @@ const SquareNode = ({ data }) => {
       {/* Flow-Start section with handles for connections */}
       <div style={flowStartStyle}>
         <p>
-          <MdPermMedia style={iconStyle} /> Flow Start
+          <MdPermMedia style={iconStyle} /> Request Intervention
         </p>
         <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
       </div>
@@ -83,6 +114,18 @@ const SquareNode = ({ data }) => {
         accept="image/*"
         onChange={handleImageUpload}
       />
+
+      {/* Text input area with handle */}
+      <div style={welcomeStyle}>
+        <textarea
+          placeholder="Type something..."
+          style={textAreaStyle}
+          value={text}
+          onChange={handleTextChange}
+        >
+          
+        </textarea>
+      </div>
     </div>
   );
 };

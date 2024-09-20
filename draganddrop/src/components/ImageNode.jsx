@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
 
-// Define styles for fixed height
+
+// Define styles for dynamic adjustment
 const nodeStyle = (isDeleted) => ({
-  width: '240px',
-  height: isDeleted ? '0px' : '200px', // Set a fixed height
+    width: '240px',
+    height: isDeleted ? '0px' : '180px', // Set a fixed height
   display: isDeleted ? 'none' : 'flex', // Hide node when deleted
   flexDirection: 'column',
   borderRadius: '8px',
@@ -27,6 +28,14 @@ const flowStartStyle = {
   position: 'relative',
 };
 
+const imgStyle = {
+  width: '91%',
+  height: '100px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  margin: '10px',
+};
+
 const iconStyle = {
   marginLeft: '20px', // Reduced margin for a cleaner look
 };
@@ -39,7 +48,7 @@ const deleteIconStyle = (isHovered) => ({
 });
 
 const SquareNode = ({ data }) => {
-  const [text, setText] = useState('');
+  const [image, setImage] = useState("https://t3.ftcdn.net/jpg/05/95/78/78/360_F_595787852_efGpIfJmAJxcof7PBsQsDmirsZ3R8o50.jpg");
   const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
   const [isHovered, setIsHovered] = useState(false); // Manage hover state
 
@@ -56,6 +65,11 @@ const SquareNode = ({ data }) => {
     }
   };
 
+  // Trigger file input dialog
+  const triggerFileInput = () => {
+    document.getElementById('fileInput').click();
+  };
+
   // Handle node delete
   const handleDelete = () => {
     setIsDeleted(true); // Set node as deleted
@@ -70,9 +84,14 @@ const SquareNode = ({ data }) => {
       {/* Flow-Start section with handles for connections */}
       <div style={flowStartStyle}>
         <p>
-          <MdPermMedia style={iconStyle} /> Flow Start
+          <MdPermMedia style={iconStyle} /> Media + Buttons
         </p>
         <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
+      </div>
+
+      {/* Image section */}
+      <div style={imgStyle} onClick={triggerFileInput}>
+        <img src={image} alt="Uploaded" style={{ height: '100%', width: '100%' }} />
       </div>
 
       {/* Hidden file input for selecting an image */}
