@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
-import { Handle } from 'reactflow';
+
 
 // Define styles for fixed height
 const nodeStyle = (isDeleted) => ({
@@ -63,6 +63,8 @@ const deleteIconStyle = (isHovered) => ({
   transition: 'opacity 0.3s', // Smooth fade-in/out
 });
 
+const edges = [{ id: '1-2', source: '1', target: '2' }];
+
 const SquareNode = ({ data }) => {
   const [text, setText] = useState('');
   const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
@@ -105,15 +107,6 @@ const SquareNode = ({ data }) => {
         </p>
         <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
       </div>
-
-      {/* Hidden file input for selecting an image */}
-      <input
-        type="file"
-        id="fileInput"
-        style={{ display: 'none' }}
-        accept="image/*"
-        onChange={handleImageUpload}
-      />
 
       {/* Text input area with handle */}
       <div style={welcomeStyle}>

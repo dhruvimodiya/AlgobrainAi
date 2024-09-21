@@ -89,7 +89,7 @@ const PdfNode = ({ data }) => {
           onClick={() => document.getElementById('pdfInput').click()} // Trigger PDF file input on click
           style={{ cursor: 'pointer' }}
         />
-        <span style={{ marginLeft: '8px', fontSize: '12px', color: 'green',alignItems:'center' }}>
+        <span style={{ marginLeft: '8px', fontSize: '12px', color: 'green',alignItems:'center'}}>
           Click to upload PDF
         </span>
 
