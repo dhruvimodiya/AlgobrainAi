@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { MdPermMedia, MdDelete, MdFileDownload } from "react-icons/md"; // Import delete and download icons
 import { FaFilePdf } from "react-icons/fa6";
+import { Position } from "@xyflow/react";
+import { Handle } from "reactflow";
 
 const nodeStyle = (isDeleted) => ({
   width: '240px',
@@ -58,6 +60,7 @@ const PdfNode = ({ data }) => {
 
   const handleDelete = () => {
     setIsDeleted(true);
+    setPdf(null); // Clear the uploaded PDF
   };
 
   return (
@@ -89,12 +92,27 @@ const PdfNode = ({ data }) => {
           onClick={() => document.getElementById('pdfInput').click()} // Trigger PDF file input on click
           style={{ cursor: 'pointer' }}
         />
-        <span style={{ marginLeft: '8px', fontSize: '12px', color: 'green',alignItems:'center'}}>
+        <span style={{ marginLeft: '8px', fontSize: '12px', color: 'green', alignItems:'center'}}>
           Click to upload PDF
         </span>
 
         {pdf && (
           <div style={{ marginTop: '10px' }}>
+            {/* Left handle for input */}
+            <Handle
+              type="target"
+              position={Position.Left} // Use Position.Left for proper left alignment
+              id="left-handle" // Unique ID for left handle
+              style={{borderColor:'green',backgroundColor:'white',position:'absolute',left:'5px' }}
+            />
+
+            {/* Right handle for output */}
+            <Handle
+              type="source"
+              position={Position.Right} // Use Position.Right for proper right alignment
+              id="right-handle" // Unique ID for right handle
+              style={{ borderColor:'green',backgroundColor:'white',position:'absolute',left:'248px'}}
+            />
             <iframe
               src={pdf}
               style={{
@@ -110,7 +128,9 @@ const PdfNode = ({ data }) => {
               <a href={pdf} download style={{ color: 'green', textDecoration: 'none' }}>
                 <MdFileDownload size={24} />
               </a>
-              <span style={{ marginLeft: '8px', fontSize: '12px', color: 'green' ,marginBottom:'10px'}}>Download PDF</span>
+              <span style={{ marginLeft: '8px', fontSize: '12px', color: 'green', marginBottom: '10px'}}>
+                Download PDF
+              </span>
             </div>
           </div>
         )}

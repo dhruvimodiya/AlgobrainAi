@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'; // Import Google Maps components
+import { Position } from '@xyflow/react';
+import { Handle } from 'reactflow';
 
 // Define styles for dynamic adjustment
 const nodeStyle = (isDeleted) => ({
@@ -76,6 +78,22 @@ const MapNode = ({ data }) => {
           <Marker position={mapPosition} />
         </GoogleMap>
       </LoadScript>
+
+      {/* Left handle for input */}
+      <Handle
+          type="target"
+          position={Position.Left} // Use Position.Left for proper left alignment
+          id="left-handle" // Unique ID for left handle
+          style={{borderColor:'green',backgroundColor:'white' }}
+        />
+
+        {/* Right handle for output */}
+        <Handle
+          type="source"
+          position={Position.Right} // Use Position.Right for proper right alignment
+          id="right-handle" // Unique ID for right handle
+          style={{borderColor:'green',backgroundColor:'white'}}
+        />
     </div>
   );
 };

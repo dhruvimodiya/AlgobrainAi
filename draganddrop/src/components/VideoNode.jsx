@@ -1,5 +1,7 @@
+import { Position } from '@xyflow/react';
 import React, { useState } from 'react';
 import { MdPermMedia, MdDelete, MdVideocam } from "react-icons/md"; // Import video upload icon
+import { Handle } from 'reactflow';
 
 // Define styles for fixed height
 const nodeStyle = (isDeleted, isHovered) => ({
@@ -123,6 +125,21 @@ const VideoNode = ({ data }) => {
           <span style={{ marginLeft: '8px' ,fontSize:'10px',marginTop:'4px',color:'green'}}>Click Here</span>
         </div>
       )}
+      {/* Left handle for input */}
+      <Handle
+          type="target"
+          position={Position.Left} // Use Position.Left for proper left alignment
+          id="left-handle" // Unique ID for left handle
+          style={{ borderColor:'green',backgroundColor:'white',position:'absolute',left:'5px' }}
+        />
+
+        {/* Right handle for output */}
+        <Handle
+          type="source"
+          position={Position.Right} // Use Position.Right for proper right alignment
+          id="right-handle" // Unique ID for right handle
+          style={{borderColor:'green',backgroundColor:'white',position:'absolute',left:'226px'}}
+        />
     </div>
   );
 };

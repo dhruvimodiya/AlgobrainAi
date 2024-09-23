@@ -9,11 +9,10 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 // Import custom nodes
-// import CircleNode from './CircleNode';
 import RectangleNode from './RectangleNode';
-import TriangleNode from './TriangleNode'; // Add TriangleNode
-import HexagonNode from './HexagonNode';   // Add HexagonNode
-import SquareNode from './SquareNode';     // Add SquareNode
+import TriangleNode from './TriangleNode'; 
+import HexagonNode from './HexagonNode';   
+import SquareNode from './SquareNode';     
 import ReqIntervention from './ReqIntervention';
 import MapNode from './MapNode';
 import LinkNode from './LinkNode';
@@ -21,21 +20,25 @@ import VideoNode from './VideoNode';
 import PdfNode from './PdfNode';
 import ImageNode from './ImageNode';
 import ShippingNode from './ShippingNode';
+import CustomEdge from './CustomEdge';
 
 // Define custom node types
 const nodeTypes = {
-  // circle: CircleNode,
   rectangle: RectangleNode,
-  triangle: TriangleNode, // Add TriangleNode type
-  hexagon: HexagonNode,   // Add HexagonNode type
-  square: SquareNode,     // Add SquareNode type
-  ReqIntervention:ReqIntervention,
-  MapNode:MapNode,
-  LinkNode:LinkNode,
-  VideoNode:VideoNode,
-  PdfNode:PdfNode,
-  ImageNode:ImageNode,
-  ShippingNode:ShippingNode,
+  triangle: TriangleNode,
+  hexagon: HexagonNode,
+  square: SquareNode,
+  ReqIntervention: ReqIntervention,
+  MapNode: MapNode,
+  LinkNode: LinkNode,
+  VideoNode: VideoNode,
+  PdfNode: PdfNode,
+  ImageNode: ImageNode,
+  ShippingNode: ShippingNode,
+};
+
+const edgeTypes = {
+  custom: CustomEdge,
 };
 
 const initialNodes = [];
@@ -45,40 +48,43 @@ const DropZone = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  // Handle node drop
-  const handleDrop = useCallback(
-    (event) => {
-      event.preventDefault();
-      const type = event.dataTransfer.getData('application/reactflow');
-      const position = {
-        x: event.clientX,
-        y: event.clientY,
-      };
+  const handleDrop = useCallback((event) => {
+    event.preventDefault();
+    const type = event.dataTransfer.getData('application/reactflow');
+    const position = {
+      x: event.clientX,
+      y: event.clientY,
+    };
 
-      const newNode = {
-        id: `${nodes.length + 1}`,
-        type: type || 'default',
-        position,
-        data: { label: `${type || 'New Node'}` },
-      };
+    const newNode = {
+      id: `${nodes.length + 1}`,
+      type: type || 'default',
+      position,
+      data: { label: `${type || 'New Node'}` },
+    };
 
-      setNodes((nds) => [...nds, newNode]);
-    },
-    [nodes, setNodes]
-  );
+    setNodes((nds) => [...nds, newNode]);
+  }, [nodes, setNodes]);
 
-  // Handle drag over the canvas
   const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   }, []);
 
-  // Handle node connection
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
-  );
-  
+  const onConnect = useCallback((params) => {
+    const newParams = { 
+      ...params, 
+      type: 'custom',
+      animated: true,
+      style: { stroke: 'green', strokeWidth: 2 },
+    };
+    setEdges((eds) => addEdge(newParams, eds));
+  }, [setEdges]);
+
+  const onEdgeClick = useCallback((event, edge) => {
+    // Remove the edge from the edges state
+    setEdges((eds) => eds.filter((e) => e.id !== edge.id));
+  }, [setEdges]);
 
   return (
     <div style={{ height: '95vh', width: '80vw' }}>
@@ -90,8 +96,9 @@ const DropZone = () => {
         onDrop={handleDrop}
         onDragOver={onDragOver}
         onConnect={onConnect}
+        onEdgeClick={onEdgeClick} // Add this line
         fitView
-        nodeTypes={nodeTypes} // Specify custom node types
+        nodeTypes={nodeTypes}
       >
         <Background />
         <Controls />

@@ -1,17 +1,23 @@
+import { Position } from '@xyflow/react';
 import React, { useState } from 'react';
-import { MdPermMedia, MdDelete, MdEdit, MdClose } from "react-icons/md"; // Import MdClose for delete icon
-import { MdOutlineDeleteSweep } from "react-icons/md";
+import { MdPermMedia, MdDelete, MdEdit } from "react-icons/md"; // MdDelete for delete functionality, MdEdit for edit functionality
+import { Handle } from 'reactflow';
 
-const nodeStyle = (isDeleted) => ({
+// Base values
+const baseNodeHeight = 300; // Base height of the node
+const buttonHeightIncrement = 12; // Height added per new button
+
+// Define styles for dynamic adjustment
+const nodeStyle = (buttonCount, isDeleted) => ({
   width: '240px',
-  height: '130px', // Set a fixed height for the node
-  display: isDeleted ? 'none' : 'flex',
+  height: isDeleted ? '0px' : `${baseNodeHeight + buttonHeightIncrement * buttonCount}px`, // Dynamically increase height based on button count
+  display: isDeleted ? 'none' : 'flex', // Hide node when deleted
   flexDirection: 'column',
   borderRadius: '8px',
-  boxShadow: '0px 4px 8px rgba(0, 128, 0, 0.3)',
+  boxShadow: '0px  4px 8px rgba(0, 128, 0, 0.3)',
   position: 'relative',
   backgroundColor: isDeleted ? 'transparent' : 'white',
-  transition: 'box-shadow 0.3s',
+  transition: 'box-shadow 0.3s', // Add a smooth transition for hover effects
 });
 
 const flowStartStyle = {
@@ -19,7 +25,7 @@ const flowStartStyle = {
   color: 'green',
   fontSize: '12px',
   display: 'flex',
-  justifyContent: 'space-between',
+  justifyContent: 'space-between', // Add space between title and delete icon
   margin: '10px',
   fontWeight: 'bold',
   backgroundColor: '#F8F8F8',
@@ -27,118 +33,156 @@ const flowStartStyle = {
   position: 'relative',
 };
 
-const buttonStyle = {
+const addedButtonStyle = {
+  width: '78%',
+  height: '5%',
+  color: 'green',
+  padding: '3px',
+  cursor: 'pointer',
+  paddingBottom: '2px',
+  fontSize: '10px',
+  marginLeft: '20px',
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  width: '217px',
-  padding: '5px',
-  fontSize: '10px',
-  color: 'green',
-  backgroundColor: 'white',
-  border: 'none',
-  borderRadius: '15px',
-  cursor: 'pointer',
-  // marginTop: '8px',
-  marginLeft: '10px',
-  border: '1px solid green',
   position: 'relative',
+  marginTop: '10px'
+};
+
+const addButtonStyle = {
+  width: '83%',
+  height: '8%',
+  color: 'green',
+  border: '1px solid green',
+  borderRadius: '15px',
+  padding: '6px',
+  cursor: 'pointer',
+  marginBottom: '10px',
+  fontSize: '10px',
+  marginLeft: '20px',
+  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
   outline:'none'
 };
 
-const menuStyle = (isMenuOpen) => ({
-  position: 'absolute',
-  top: '95%', // Position below the button
-  left: '5%',
-  backgroundColor: 'white',
-  border: '1px solid green',
-  borderRadius: '8px',
-  boxShadow: '0px 4px 8px rgba(0, 128, 0, 0.3)',
-  padding: '8px',
-  width: '85%',
-  display: isMenuOpen ? 'flex' : 'none', // Display menu based on isMenuOpen
-  flexDirection: 'column',
-  opacity: isMenuOpen ? 1 : 0,
-  transition: 'opacity 0.3s',
-  zIndex: 1,
+const menuBackground = {
+  backgroundColor: '#DCDCDC',
+  borderRadius: '2px',
+  paddingBottom: '2px'
+};
+
+const iconStyle = {
+  cursor: 'pointer',
+  color: 'green',
+  marginLeft: '0px',
+};
+
+const deleteIconStyle = (isHovered) => ({
+  cursor: 'pointer',
+  color: 'green',
+  opacity: isHovered ? 1 : 0, // Show icon only when hovered
+  transition: 'opacity 0.3s', // Smooth fade-in/out
 });
 
 const ShippingNode = ({ data }) => {
-  const [isDeleted, setIsDeleted] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [menuItems, setMenuItems] = useState(['Option 1', 'Option 2']); // Default menu items
-  const [newMenuItem, setNewMenuItem] = useState(''); // State for new menu item
+  const [buttons, setButtons] = useState([]);
+  const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
+  const [isHovered, setIsHovered] = useState(false); // Manage hover state
+  const [editIndex, setEditIndex] = useState(-1); // Track which button is being edited
 
-  const handleDelete = () => {
-    setIsDeleted(true);
-  };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleAddItem = () => {
-    if (newMenuItem.trim()) {
-      setMenuItems([...menuItems, newMenuItem]); // Add new item to the menu
-      setNewMenuItem(''); // Clear input field after adding
+  // Add new button
+  const addNewButton = () => {
+    if (buttons.length < 10) {
+      setButtons([...buttons, `Button ${buttons.length + 1}`]);
     }
   };
 
-  const handleRemoveItem = (index) => {
-    const updatedItems = menuItems.filter((_, i) => i !== index); // Remove item at the specified index
-    setMenuItems(updatedItems);
+  // Handle editing button names
+  const handleEditClick = (index) => {
+    setEditIndex(index); // Set the index of the button to be edited
+  };
+
+  // Handle saving button name
+  const handleSaveClick = (index, newName) => {
+    const updatedButtons = [...buttons];
+    updatedButtons[index] = newName; // Update the button name
+    setButtons(updatedButtons);
+    setEditIndex(-1); // Exit edit mode
+  };
+
+  // Handle deleting individual buttons
+  const handleDeleteButton = (index) => {
+    const updatedButtons = buttons.filter((_, i) => i !== index); // Remove the button from the array
+    setButtons(updatedButtons);
+  };
+
+  // Handle node delete
+  const handleDelete = () => {
+    setIsDeleted(true); // Set node as deleted
   };
 
   return (
     <div
-      style={nodeStyle(isDeleted)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      style={nodeStyle(buttons.length, isDeleted)}
+      onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
+      onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
     >
+      {/* Flow-Start section with handles for connections */}
       <div style={flowStartStyle}>
         <p>
-          <MdPermMedia style={{ marginLeft: '20px' }} /> Special Offer
+          <MdPermMedia /> Media + Buttons
         </p>
-        <MdDelete style={{ cursor: 'pointer', color: 'green', opacity: isHovered ? 1 : 0 }} onClick={handleDelete} />
+        <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
       </div>
 
-      {/* Display message above the button */}
       <p style={{ margin: '10px', fontSize: '10px', fontWeight: 'bold', color: 'green' }}>
         Which Shipping Option do you prefer?
       </p>
 
-      {/* Button with menu icon */}
-      <button style={buttonStyle} onClick={toggleMenu}>
-        Menu <MdEdit />
-      </button>
+      {/* Dynamic buttons with edit and delete functionality */}
+      <div style={menuBackground}>
+        {buttons.map((button, index) => (
+          <div key={index} style={addedButtonStyle}>
+            {/* Left handle for input */}
+            <Handle
+              type="target"
+              position={Position.Left}
+              id={`left-handle-${index}`} // Unique ID for left handle
+              style={{ borderColor: 'green', backgroundColor: 'white', position: 'absolute', left: '-6px', top: '50%' }}
+            />
 
-      {/* Menu that appears below the button */}
-      <div style={menuStyle(isMenuOpen)}>
-        {/* List of menu items with delete buttons */}
-        {menuItems.map((item, index) => (
-          <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',backgroundColor:'#F8F8F8' ,marginBottom:'2px',borderRadius:'10px',fontSize:'10px',padding:'2px' }}>
-            <p style={{ margin: 0 }}>{item}</p>
-            <MdOutlineDeleteSweep 
-              style={{ cursor: 'pointer', color: 'red' }}
-              onClick={() => handleRemoveItem(index)} // Call remove function
+            {/* If in edit mode, show input field */}
+            {editIndex === index ? (
+              <input
+                type="text"
+                defaultValue={button}
+                onBlur={(e) => handleSaveClick(index, e.target.value)} // Save on blur
+                style={{ width: '100px', fontSize: '10px', marginRight: '5px' }}
+              />
+            ) : (
+              <span>{button}</span>
+            )}
+
+            {/* Edit and Delete Icons */}
+            <MdEdit style={iconStyle} onClick={() => handleEditClick(index)} /> {/* Edit icon */}
+            <MdDelete style={iconStyle} onClick={() => handleDeleteButton(index)} /> {/* Delete icon */}
+
+            {/* Right handle for output */}
+            <Handle
+              type="source"
+              position={Position.Right}
+              id={`right-handle-${index}`} // Unique ID for right handle
+              style={{ borderColor: 'green', backgroundColor: 'white', position: 'absolute', right: '-6px', top: '50%' }}
             />
           </div>
         ))}
-
-        {/* Input and button for adding new items */}
-        <input
-          type="text"
-          value={newMenuItem}
-          onChange={(e) => setNewMenuItem(e.target.value)}
-          placeholder="Add new item"
-          style={{ margin: '8px 0', padding: '4px', borderRadius:'15px',outline:'none',fontSize:'10px'}}
-        />
-        
-        <button onClick={handleAddItem} style={{ padding: '4px', fontSize: '12px',borderRadius:'15px',width: '207px', border:'1px solid green' ,fontSize:'9px',outline:'none',}}>
-          Add Item
-        </button>
       </div>
+
+      {/* Add button */}
+      {buttons.length < 10 && (
+        <button style={addButtonStyle} onClick={addNewButton}>
+          Add Button
+        </button>
+      )}
     </div>
   );
 };

@@ -52,13 +52,13 @@ const App = () => {
             {/* Each DragItem and label */}
             {[
               { type: "rectangle", icon: <BiRectangle />, label: "Flow-Start" },
-              { type: "square", icon: <MdPermMedia />, label: "Media-Buttons" },
-              { type: "ReqIntervention", icon: <MdPermMedia />, label: "Request Intervention" },
-              { type: "MapNode", icon: <FaLocationDot />, label: "Location" },
-              { type: "LinkNode", icon: <MdLocalOffer />, label: "Special Offer" },
+              { type: "ReqIntervention", icon: <MdPermMedia />, label: "Text" },
+              { type: "ImageNode", icon: <FaImage  />, label: "Image" },
               { type: "VideoNode", icon: <FaVideo  />, label: "Video" },
               { type: "PdfNode", icon: <FaFilePdf  />, label: "PDF" },
-              { type: "ImageNode", icon: <FaImage  />, label: "Image" },
+              { type: "square", icon: <MdPermMedia />, label: "Media-Buttons" },
+              { type: "MapNode", icon: <FaLocationDot />, label: "Location" },
+              { type: "LinkNode", icon: <MdLocalOffer />, label: "Special Offer" },
               { type: "ShippingNode", icon: <FaImage  />, label: "Shipping" },
             ].map((item, index) => (
               <div key={index} style={{ textAlign: "center" }}>

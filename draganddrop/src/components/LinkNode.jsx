@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MdPermMedia, MdDelete, MdEdit } from "react-icons/md"; // Import edit icon
 import { Handle } from 'reactflow';
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { Position } from '@xyflow/react';
 
 // Define styles for fixed height
 const nodeStyle = (isDeleted, isEditing) => ({
@@ -149,25 +150,73 @@ const LinkNode = ({ data }) => {
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', marginTop: '8px' }}>
-          <input
-            type="text"
-            value={buttonName}
-            onChange={handleButtonNameChange}
-            placeholder="Edit button name"
-            style={{ marginBottom: '8px', padding: '4px', fontSize: '12px',borderRadius:'15px',width: '207px', marginLeft: '10px',border:'1px solid green' ,fontSize:'9px',outline:'none'}}
-          />
-          <input
-            type="text"
-            value={buttonLink}
-            onChange={handleButtonLinkChange}
-            placeholder="Edit button link"
-            style={{ marginBottom: '8px', padding: '4px', fontSize: '12px',borderRadius:'15px',width: '207px', marginLeft: '10px',border:'1px solid green' ,fontSize:'9px',outline:'none' }}
-          />
+          {/* Button Name Input with Handles */}
+          <div style={{ position: 'relative' }}>
+            <Handle
+              type="target"
+              position={Position.Left}
+              id="left-handle-buttonName"
+              style={{ borderColor:'green',backgroundColor:'white', position: 'absolute', left: '5px', top: '45%', transform: 'translateY(-50%)' }}
+            />
+            <input
+              type="text"
+              value={buttonName}
+              onChange={handleButtonNameChange}
+              placeholder="Edit button name"
+              style={{ marginBottom: '8px', padding: '4px', fontSize: '12px',borderRadius:'15px',width: '207px', marginLeft: '10px',border:'1px solid green' ,fontSize:'9px',outline:'none'}}
+            />
+            <Handle
+              type="source"
+              position={Position.Right}
+              id="right-handle-buttonName"
+              style={{ borderColor:'green',backgroundColor:'white', position: 'absolute', right: '9px', top: '45%', transform: 'translateY(-50%)' }}
+            />
+          </div>
+
+          {/* Button Link Input with Handles */}
+          <div style={{ position: 'relative' }}>
+            <Handle
+              type="target"
+              position={Position.Left}
+              id="left-handle-buttonLink"
+              style={{ borderColor:'green',backgroundColor:'white', position: 'absolute', left: '6px', top: '45%', transform: 'translateY(-50%)' }}
+            />
+            <input
+              type="text"
+              value={buttonLink}
+              onChange={handleButtonLinkChange}
+              placeholder="Edit button link"
+              style={{ marginBottom: '8px', padding: '4px', fontSize: '12px',borderRadius:'15px',width: '207px', marginLeft: '10px',border:'1px solid green' ,fontSize:'9px',outline:'none' }}
+            />
+            <Handle
+              type="source"
+              position={Position.Right}
+              id="right-handle-buttonLink"
+              style={{ borderColor:'green',backgroundColor:'white', position: 'absolute', right: '9px', top: '45%', transform: 'translateY(-50%)' }}
+            />
+          </div>
+
           <button onClick={toggleEdit} style={{ padding: '8px', fontSize: '12px', backgroundColor: 'green', color: 'white', border: 'none', borderRadius: '15px',width: '215px', marginLeft: '10px' }}>
             Save
           </button>
         </div>
       )}
+
+      {/* Left handle for input */}
+      <Handle
+          type="target"
+          position={Position.Left} // Use Position.Left for proper left alignment
+          id="left-handle" // Unique ID for left handle
+          style={{ backgroundColor: 'green',position:'absolute',left:'5px',top:'5rem'}}
+        />
+
+        {/* Right handle for output */}
+        <Handle
+          type="source"
+          position={Position.Right} // Use Position.Right for proper right alignment
+          id="right-handle" // Unique ID for right handle
+          style={{ backgroundColor: 'green',position:'absolute',left:'226px',top:'5rem'}}
+        />
     </div>
   );
 };

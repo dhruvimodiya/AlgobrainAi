@@ -1,29 +1,34 @@
+import { Position } from '@xyflow/react';
 import React, { useState } from 'react';
 import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
+import { Handle } from 'reactflow';
 
 // Base values
 const baseNodeHeight = 300; // Base height of the node
-const buttonHeightIncrement = 20; // Height added per new button
+const buttonHeightIncrement = 50; // Height added per new button
+const padding = 20; // Padding for the container
 
 // Define styles for dynamic adjustment
 const nodeStyle = (buttonCount, isDeleted) => ({
   width: '240px',
-  height: isDeleted ? '0px' : `${baseNodeHeight + buttonHeightIncrement * buttonCount}px`, // Dynamically increase height based on button count
-  display: isDeleted ? 'none' : 'flex', // Hide node when deleted
+  maxHeight: '400px', // Set a maximum height
+  height: isDeleted ? '0px' : `${baseNodeHeight + buttonHeightIncrement * buttonCount + padding}px`,
+  display: isDeleted ? 'none' : 'flex',
   flexDirection: 'column',
   borderRadius: '8px',
-  boxShadow: '0px  4px 8px rgba(0, 128, 0, 0.3)',
+  boxShadow: '0px 0px 2px rgba(0, 128, 0, 0.3)',
   position: 'relative',
   backgroundColor: isDeleted ? 'transparent' : 'white',
-  transition: 'box-shadow 0.3s', // Add a smooth transition for hover effects
+  transition: 'height 0.3s, box-shadow 0.3s',
 });
+
 
 const flowStartStyle = {
   borderRadius: '4px',
   color: 'green',
   fontSize: '12px',
   display: 'flex',
-  justifyContent: 'space-between', // Add space between title and delete icon
+  justifyContent: 'space-between',
   margin: '10px',
   fontWeight: 'bold',
   backgroundColor: '#F8F8F8',
@@ -33,10 +38,12 @@ const flowStartStyle = {
 
 const imgStyle = {
   width: '91%',
-  height: '100px',
+  height: '50px',
   borderRadius: '4px',
   cursor: 'pointer',
-  margin: '10px',
+  marginLeft: '12px',
+  fontSize:'12px',
+  color:'red',
 };
 
 const welcomeStyle = {
@@ -89,44 +96,66 @@ const addedButtonStyle = {
   fontSize: '10px',
   marginLeft: '20px',
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'space-between',
+  alignItems: 'center',
   boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+  position: 'relative',
 };
 
 const iconStyle = {
-  marginLeft: '20px', // Reduced margin for a cleaner look
+  marginLeft: '20px',
 };
 
 const deleteIconStyle = (isHovered) => ({
   cursor: 'pointer',
   color: 'green',
-  opacity: isHovered ? 1 : 0, // Show icon only when hovered
-  transition: 'opacity 0.3s', // Smooth fade-in/out
+  opacity: isHovered ? 1 : 0,
+  transition: 'opacity 0.3s',
 });
 
 const SquareNode = ({ data }) => {
-  const [image, setImage] = useState("https://t3.ftcdn.net/jpg/05/95/78/78/360_F_595787852_efGpIfJmAJxcof7PBsQsDmirsZ3R8o50.jpg");
+  const [file, setFile] = useState(null);
+  const [fileType, setFileType] = useState('');
   const [buttons, setButtons] = useState([]);
   const [text, setText] = useState('');
-  const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
-  const [isHovered, setIsHovered] = useState(false); // Manage hover state
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
 
-  // Handle image upload
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result); // Set the uploaded image
-        console.log(`Uploaded image: ${file.name}`); // Log image name
-      };
-      reader.readAsDataURL(file);
+  // Handle file upload and preview
+  const handleFileUpload = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
     }
   };
 
-  // Trigger file input dialog
+  // Trigger file type selection
   const triggerFileInput = () => {
-    document.getElementById('fileInput').click();
+    setShowOptions(true); // Show file type options
+  };
+
+  // Handle file type selection
+  const handleFileTypeSelection = (type) => {
+    let acceptType = '';
+    switch (type) {
+      case 'image':
+        acceptType = 'image/*';
+        break;
+      case 'video':
+        acceptType = 'video/*';
+        break;
+      case 'document':
+        acceptType = '.pdf,.doc,.docx';
+        break;
+      default:
+        acceptType = 'image/*';
+    }
+    setShowOptions(false);
+    setFileType(type);
+    const input = document.getElementById('fileInput');
+    input.setAttribute('accept', acceptType);
+    input.click();
   };
 
   // Add new button
@@ -139,41 +168,93 @@ const SquareNode = ({ data }) => {
   // Handle text area input
   const handleTextChange = (event) => {
     setText(event.target.value);
-    console.log(`Text area input: ${event.target.value}`); // Log text area input
   };
 
   // Handle node delete
   const handleDelete = () => {
-    setIsDeleted(true); // Set node as deleted
+    setIsDeleted(true);
+  };
+
+  // Handle individual button delete
+  const handleDeleteButton = (index) => {
+    const updatedButtons = buttons.filter((_, i) => i !== index);
+    setButtons(updatedButtons);
+  };
+
+  // Render file preview based on type
+  const renderFilePreview = () => {
+    if (!file) return null;
+
+    const fileUrl = URL.createObjectURL(file);
+
+    switch (fileType) {
+      case 'image':
+        return <img src={fileUrl} alt="Uploaded" style={{ height: '100%', width: '100%',marginTop:'0px' }} />;
+      case 'video':
+        return <video src={fileUrl} controls style={{ height: '100%', width: '100%' }} />;
+      case 'document':
+        // Render PDF preview
+        if (file.type === 'application/pdf') {
+          return (
+            <iframe
+              src={fileUrl}
+              title="PDF Preview"
+              style={{ height: '100%', width: '100%' }}
+              frameBorder="0"
+            />
+          );
+        } else {
+          return (
+            <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+              Download {file.name}
+            </a>
+          );
+        }
+      default:
+        return null;
+    }
   };
 
   return (
     <div
       style={nodeStyle(buttons.length, isDeleted)}
-      onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
-      onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {/* Flow-Start section with handles for connections */}
       <div style={flowStartStyle}>
         <p>
           <MdPermMedia style={iconStyle} /> Media + Buttons
         </p>
-        <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
+        <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} />
       </div>
 
-      {/* Image section */}
+      {/* File selection area */}
       <div style={imgStyle} onClick={triggerFileInput}>
-        <img src={image} alt="Uploaded" style={{ height: '100%', width: '100%' }} />
+        <p>Select a file to upload (Image, Video, Document)</p>
       </div>
 
-      {/* Hidden file input for selecting an image */}
+      {/* File type options */}
+      {showOptions && (
+        <div style={{ margin: '10px', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 128, 0, 0.3)' }}>
+          <p onClick={() => handleFileTypeSelection('image')}>Select Image</p>
+          <p onClick={() => handleFileTypeSelection('video')}>Select Video</p>
+          <p onClick={() => handleFileTypeSelection('document')}>Select Document</p>
+        </div>
+      )}
+
+      {/* Hidden file input for selecting an image/video/document */}
       <input
         type="file"
         id="fileInput"
         style={{ display: 'none' }}
-        accept="image/*"
-        onChange={handleImageUpload}
+        onChange={handleFileUpload}
       />
+
+      {/* File preview section */}
+      <div style={{ margin: '10px', border: '1px solid green', borderRadius: '4px', padding: '5px' }}>
+        {renderFilePreview()}
+      </div>
 
       {/* Text input area */}
       <div style={welcomeStyle}>
@@ -182,13 +263,26 @@ const SquareNode = ({ data }) => {
           style={textAreaStyle}
           value={text}
           onChange={handleTextChange}
-        ></textarea>
+        />
       </div>
 
-      {/* Dynamic buttons */}
+      {/* Dynamic buttons with handles and delete functionality */}
       {buttons.map((button, index) => (
         <div key={index} style={addedButtonStyle}>
-          {button}
+          <Handle
+            type="target"
+            position={Position.Left}
+            id={`left-handle-${index}`}
+            style={{ borderColor: 'green', backgroundColor: 'white', position: 'absolute', left: '-6px', top: '50%' }}
+          />
+          <span>{button}</span>
+          <MdDelete style={iconStyle} onClick={() => handleDeleteButton(index)} />
+          <Handle
+            type="source"
+            position={Position.Right}
+            id={`right-handle-${index}`}
+            style={{ borderColor: 'green', backgroundColor: 'white', position: 'absolute', right: '-6px', top: '50%' }}
+          />
         </div>
       ))}
 
@@ -201,5 +295,6 @@ const SquareNode = ({ data }) => {
     </div>
   );
 };
+
 
 export default SquareNode;

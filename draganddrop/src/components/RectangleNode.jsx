@@ -1,5 +1,7 @@
+import { Position } from '@xyflow/react';
 import React, { useState } from 'react';
 import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
+import { Handle } from 'reactflow';
 
 // Define styles for fixed height
 const nodeStyle = (isDeleted) => ({
@@ -43,19 +45,6 @@ const SquareNode = ({ data }) => {
   const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
   const [isHovered, setIsHovered] = useState(false); // Manage hover state
 
-  // Handle image upload
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result); // Set the uploaded image
-        console.log(`Uploaded image: ${file.name}`); // Log image name
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   // Handle node delete
   const handleDelete = () => {
     setIsDeleted(true); // Set node as deleted
@@ -67,6 +56,7 @@ const SquareNode = ({ data }) => {
       onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
       onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
     >
+    
       {/* Flow-Start section with handles for connections */}
       <div style={flowStartStyle}>
         <p>
@@ -75,14 +65,13 @@ const SquareNode = ({ data }) => {
         <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
       </div>
 
-      {/* Hidden file input for selecting an image */}
-      <input
-        type="file"
-        id="fileInput"
-        style={{ display: 'none' }}
-        accept="image/*"
-        onChange={handleImageUpload}
-      />
+        {/* Right handle for output */}
+        <Handle
+          type="source"
+          position={Position.Right} // Use Position.Right for proper right alignment
+          id="right-handle" // Unique ID for right handle
+          style={{borderColor:'green',backgroundColor:'white',position:'absolute',left:'226px',top:'2rem' }}
+        />
     </div>
   );
 };

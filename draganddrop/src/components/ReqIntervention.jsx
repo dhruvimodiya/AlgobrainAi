@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
+import { Handle, Position } from 'reactflow'; // Import Position for handle positioning
 
-
-// Define styles for fixed height
 const nodeStyle = (isDeleted) => ({
   width: '240px',
   height: isDeleted ? '0px' : '200px', // Set a fixed height
@@ -63,25 +62,10 @@ const deleteIconStyle = (isHovered) => ({
   transition: 'opacity 0.3s', // Smooth fade-in/out
 });
 
-const edges = [{ id: '1-2', source: '1', target: '2' }];
-
-const SquareNode = ({ data }) => {
+const ReqIntervention = ({ data }) => {
   const [text, setText] = useState('');
   const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
   const [isHovered, setIsHovered] = useState(false); // Manage hover state
-
-  // Handle image upload
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result); // Set the uploaded image
-        console.log(`Uploaded image: ${file.name}`); // Log image name
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   // Handle text area input
   const handleTextChange = (event) => {
@@ -103,24 +87,38 @@ const SquareNode = ({ data }) => {
       {/* Flow-Start section with handles for connections */}
       <div style={flowStartStyle}>
         <p>
-          <MdPermMedia style={iconStyle} /> Request Intervention
+          <MdPermMedia style={iconStyle} />Text
         </p>
         <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
       </div>
 
-      {/* Text input area with handle */}
+      {/* Text input area with handles on both left and right sides */}
       <div style={welcomeStyle}>
         <textarea
           placeholder="Type something..."
           style={textAreaStyle}
           value={text}
           onChange={handleTextChange}
-        >
-          
-        </textarea>
+        />
+        
+       {/* Left handle for input */}
+       <Handle
+          type="target"
+          position={Position.Left} // Use Position.Left for proper left alignment
+          id="left-handle" // Unique ID for left handle
+          style={{ borderColor:'green',backgroundColor:'white',position:'absolute',left:'5px' }}
+        />
+
+        {/* Right handle for output */}
+        <Handle
+          type="source"
+          position={Position.Right} // Use Position.Right for proper right alignment
+          id="right-handle" // Unique ID for right handle
+          style={{ borderColor:'green',backgroundColor:'white',position:'absolute',left:'226px'}}
+        />
       </div>
     </div>
   );
 };
 
-export default SquareNode;
+export default ReqIntervention;
