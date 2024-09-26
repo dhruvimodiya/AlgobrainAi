@@ -46,24 +46,24 @@ const App = () => {
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",  // Two equal columns
-              gap: "16px",  // Space between items
+              gap: "10px",  // Space between items
             }}
           >
             {/* Each DragItem and label */}
             {[
-              { type: "rectangle", icon: <BiRectangle />, label: "Flow-Start" },
+              { type: "FlowStart", icon: <BiRectangle />, label: "Flow-Start" },
               { type: "ReqIntervention", icon: <MdPermMedia />, label: "Text" },
               { type: "ImageNode", icon: <FaImage  />, label: "Image" },
               { type: "VideoNode", icon: <FaVideo  />, label: "Video" },
               { type: "PdfNode", icon: <FaFilePdf  />, label: "PDF" },
-              { type: "square", icon: <MdPermMedia />, label: "Media-Buttons" },
+              { type: "Interactive", icon: <MdPermMedia />, label: "Interactive" },
               { type: "MapNode", icon: <FaLocationDot />, label: "Location" },
               { type: "LinkNode", icon: <MdLocalOffer />, label: "Special Offer" },
               { type: "ShippingNode", icon: <FaImage  />, label: "Shipping" },
             ].map((item, index) => (
               <div key={index} style={{ textAlign: "center" }}>
                 <DragItem type={item.type} name={item.icon} />
-                <p style={{ margin: '0', fontSize: '12px', color: 'black'}}>{item.label}</p>
+                <p style={{ marginRight: '30px', fontSize: '12px', color: 'black',}}>{item.label}</p>
               </div>
             ))}
           </div>

@@ -2,6 +2,7 @@ import { Position } from '@xyflow/react';
 import React, { useState } from 'react';
 import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
 import { Handle } from 'reactflow';
+import { RxCross2 } from "react-icons/rx"; // Import cross icon
 
 // Define styles for fixed height
 const nodeStyle = (isDeleted) => ({
@@ -40,8 +41,31 @@ const deleteIconStyle = (isHovered) => ({
   transition: 'opacity 0.3s', // Smooth fade-in/out
 });
 
-const SquareNode = ({ data }) => {
-  const [text, setText] = useState('');
+const bodyStyle = {
+  backgroundColor: '#FFF5EE',
+  marginLeft: '10px',
+  width: '86%',
+  height: '20px',
+  padding: '5px',
+  borderRadius: '5px',
+  outline: "none",
+  border: '1px solid white',
+  fontSize: '12px',
+  marginTop: '7px',
+  position: 'relative', // Make position relative for cross icon
+};
+
+const crossIconStyle = {
+  position: 'absolute',
+  right: '15px',
+  top: '60%',
+  transform: 'translateY(-50%)', // Center the icon vertically
+  cursor: 'pointer',
+  color: 'gray', // Change color as desired
+};
+
+const FlowStart = ({ data }) => {
+  const [inputs, setInputs] = useState(['', '', '']); // Manage state for input fields
   const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
   const [isHovered, setIsHovered] = useState(false); // Manage hover state
 
@@ -50,13 +74,25 @@ const SquareNode = ({ data }) => {
     setIsDeleted(true); // Set node as deleted
   };
 
+  // Handle input field change
+  const handleInputChange = (index, value) => {
+    const newInputs = [...inputs];
+    newInputs[index] = value;
+    setInputs(newInputs);
+  };
+
+  // Handle input field removal
+  const handleRemoveInput = (index) => {
+    const newInputs = inputs.filter((_, i) => i !== index); // Remove input at index
+    setInputs(newInputs);
+  };
+
   return (
     <div
       style={nodeStyle(isDeleted)}
       onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
       onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
     >
-    
       {/* Flow-Start section with handles for connections */}
       <div style={flowStartStyle}>
         <p>
@@ -65,15 +101,32 @@ const SquareNode = ({ data }) => {
         <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
       </div>
 
-        {/* Right handle for output */}
-        <Handle
-          type="source"
-          position={Position.Right} // Use Position.Right for proper right alignment
-          id="right-handle" // Unique ID for right handle
-          style={{borderColor:'green',backgroundColor:'white',position:'absolute',left:'226px',top:'2rem' }}
-        />
+      <div className='body'>
+        {inputs.map((input, index) => (
+          <div key={index} style={{ position: 'relative' }}>
+            <input 
+              type="text" 
+              style={bodyStyle} 
+              value={input} 
+              onChange={(e) => handleInputChange(index, e.target.value)} // Handle input change
+            />
+            <RxCross2 
+              style={crossIconStyle} 
+              onClick={() => handleRemoveInput(index)} // Handle input removal
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Right handle for output */}
+      <Handle
+        type="source"
+        position={Position.Right} // Use Position.Right for proper right alignment
+        id="right-handle" // Unique ID for right handle
+        style={{ borderColor: 'green', backgroundColor: 'white', position: 'absolute', left: '226px', top: '2rem' }}
+      />
     </div>
   );
 };
 
-export default SquareNode;
+export default FlowStart;

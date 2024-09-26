@@ -1,0 +1,183 @@
+kb={
+Start:{
+    type:"interactive",
+    date:{
+        body:""
+    }
+}
+}
+
+
+console.log(kb)
+console.log(JSON.stringify(kb),null,2)
+
+
+
+const kb = {
+    "start": {
+        type: 'interactive',//text,imae,video
+        data: {
+            interactiveType: "button",
+            body: {
+                text: "Welcome to Algo Brain AI"
+            },
+            action: {
+                buttons: [
+                    {
+                        type: "reply",
+                        reply: {
+                            id: "information",
+                            title: "More Information"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "information": {
+        type: 'interactive',
+        data: {
+            interactiveType: "button",
+            body: {
+                text: "Welcome to Demo Bot! How can I help you today?"
+            },
+            action: {
+                buttons: [
+                    {
+                        type: "reply",
+                        reply: {
+                            id: "about",
+                            title: "About Us"
+                        }
+                    },
+                    {
+                        type: "reply",
+                        reply: {
+                            id: "ourcompany",
+                            title: "Our Company"
+                        }
+                    },
+                    {
+                        type: "reply",
+                        reply: {
+                            id: "contact",
+                            title: "Contact"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "ourcompany": {
+        type: 'actionUrl',
+        data: {
+            header: {
+                type: "text",
+                text: "Algo Travels Platform"
+            },
+            body: {
+                text: "Click the button below to explore our Algo Travels Platform."
+            },
+            footer: {
+                text: "AlgoBrain: Transforming travel experiences!"
+            },
+            displayText: "Explore Now",
+            url: "https://algobrainai.com/"
+        }
+    },
+    "contact": {
+        type: 'interactive',
+        data: {
+            interactiveType: "button",
+            body: {
+                text: "Contact Us"
+            },
+            action: {
+                buttons: [
+                    {
+                        type: "reply",
+                        reply: {
+                            id: "poneNumber",
+                            title: "Call Us"
+                        }
+                    },
+                    {
+                        type: "reply",
+                        reply: {
+                            id: "location",
+                            title: "Address"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "poneNumber": {
+        type: "contact",
+        data: {
+            contacts: [
+                {
+                    name: {
+                        formatted_name: "AlgoBrain Support",
+                        first_name: "AlgoBrain",
+                        last_name: "Support"
+                    },
+                    phones: [
+                        {
+                            phone: "+911234567890",
+                            wa_id: "911234567890"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "location": {
+        type: 'location',
+        data: {
+            latitude: 21.141753,
+            longitude: 72.773213,
+            name: "AlgoBrain AI",
+            address: "Surat, INDIA"
+        }
+    },
+    "about": {
+        type: 'interactive',
+        data: {
+            interactiveType: "button",
+            body: {
+                text: "Learn more about our company:"
+            },
+            action: {
+                buttons: [
+                    {
+                        type: "reply",
+                        reply: {
+                            id: "story",
+                            title: "Our Story"
+                        }
+                    },
+                    {
+                        type: "reply",
+                        reply: {
+                            id: "team",
+                            title: "Our Team"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "story": {
+        type: 'text',
+        data: {
+            body: "Our company was founded in 2010 with a mission to deliver innovative technology solutions to businesses worldwide."
+        }
+    },
+    "team": {
+        type: 'text',
+        data: {
+            body: "Our team consists of experienced developers, designers, and AI specialists dedicated to creating cutting-edge solutions."
+        }
+    }
+};

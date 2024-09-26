@@ -140,42 +140,51 @@ const ShippingNode = ({ data }) => {
 
       {/* Dynamic buttons with edit and delete functionality */}
       <div style={menuBackground}>
-        {buttons.map((button, index) => (
-          <div key={index} style={addedButtonStyle}>
-            {/* Left handle for input */}
-            <Handle
-              type="target"
-              position={Position.Left}
-              id={`left-handle-${index}`} // Unique ID for left handle
-              style={{ borderColor: 'green', backgroundColor: 'white', position: 'absolute', left: '-6px', top: '50%' }}
-            />
+  {buttons.map((button, index) => (
+    <div key={index} style={addedButtonStyle}>
+      {/* Left handle for input */}
+      <Handle
+        type="target"
+        position={Position.Left}
+        id={`left-handle-${index}`} // Unique ID for left handle
+        style={{ borderColor: 'green', backgroundColor: 'white', position: 'absolute', left: '-6px', top: '50%' }}
+      />
 
-            {/* If in edit mode, show input field */}
-            {editIndex === index ? (
-              <input
-                type="text"
-                defaultValue={button}
-                onBlur={(e) => handleSaveClick(index, e.target.value)} // Save on blur
-                style={{ width: '100px', fontSize: '10px', marginRight: '5px' }}
-              />
-            ) : (
-              <span>{button}</span>
-            )}
+      {/* If in edit mode, show input field */}
+      {editIndex === index ? (
+        <input
+          type="text"
+          defaultValue={button}
+          onBlur={(e) => handleSaveClick(index, e.target.value)} // Save on blur
+          style={{ width: '100px', fontSize: '10px', marginRight: '5px' }}
+        />
+      ) : (
+        <span>{button}</span>
+      )}
 
-            {/* Edit and Delete Icons */}
-            <MdEdit style={iconStyle} onClick={() => handleEditClick(index)} /> {/* Edit icon */}
-            <MdDelete style={iconStyle} onClick={() => handleDeleteButton(index)} /> {/* Delete icon */}
-
-            {/* Right handle for output */}
-            <Handle
-              type="source"
-              position={Position.Right}
-              id={`right-handle-${index}`} // Unique ID for right handle
-              style={{ borderColor: 'green', backgroundColor: 'white', position: 'absolute', right: '-6px', top: '50%' }}
-            />
-          </div>
-        ))}
+      {/* Container for Edit and Delete Icons */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: '10px' }}>
+        <MdEdit
+          style={iconStyle}
+          onClick={() => handleEditClick(index)}
+        /> {/* Edit icon */}
+        <MdDelete
+          style={iconStyle}
+          onClick={() => handleDeleteButton(index)}
+        /> {/* Delete icon */}
       </div>
+
+      {/* Right handle for output */}
+      <Handle
+        type="source"
+        position={Position.Right}
+        id={`right-handle-${index}`} // Unique ID for right handle
+        style={{ borderColor: 'green', backgroundColor: 'white', position: 'absolute', right: '-6px', top: '50%' }}
+      />
+    </div>
+  ))}
+</div>
+
 
       {/* Add button */}
       {buttons.length < 10 && (
