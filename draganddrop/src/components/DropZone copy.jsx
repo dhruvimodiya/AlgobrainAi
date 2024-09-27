@@ -110,6 +110,7 @@ const DropZone = () => {
       return;
     }
 
+
     let nodeEl={
       type:selectedNode.type,
     }
@@ -143,41 +144,28 @@ const DropZone = () => {
     // Assuming a maximum of 3 buttons
     for (let i = 0; i < 3; i++) {
         const buttonElement = document.getElementById(`node${selectedNode.id}_button${i}`);
+        console.log("🚀 ~ handlePrintDroppedItems ~ buttonElement:-------", buttonElement)
         if (buttonElement) {
-  
+            const buttonValue = buttonElement.value || null; // Push the button value
             
             // Get corresponding sub-header, sub-footer, and sub-body elements
             const subHeaderElement = document.getElementById(`node${selectedNode.id}_button${i}_subheader`);
-            const subBodyElement = document.getElementById(`node${selectedNode.id}_button${i}_subbody`);
             const subFooterElement = document.getElementById(`node${selectedNode.id}_button${i}_subfooter`);
-
-            let buttonVal={}
-            if(subHeaderElement){
-              buttonVal.head=subHeaderElement.value||null
-              console.log("sub header :",subHeaderElement.value)
-            }
-
-            if(subBodyElement){
-              buttonVal.body=subBodyElement.value||null
-
-              console.log("subBodyElement  :",subBodyElement.value)
-            }
-            if(subFooterElement){
-              buttonVal.footer=subFooterElement.value||null
-
-              console.log("subFooterElement  :",subFooterElement.value)
-            }
-            
+            const subBodyElement = document.getElementById(`node${selectedNode.id}_button${i}_subbody`);
+          console.log("subheaderElement",document.getElementById("node1_button0_subheader"))
             // Create a button object with all relevant data
-            
-
-
+            const buttonData = {
+                value: buttonValue,
+                subHeader: subHeaderElement ? subHeaderElement.value || null : null,
+                subFooter: subFooterElement ? subFooterElement.value || null : null,
+                subBody: subBodyElement ? subBodyElement.value || null : null
+            };
 
             // Push the button object into the buttons array
-            buttons.push(buttonVal);
+            buttons.push(buttonData);
         }
     }
-console.log("dude done :",buttons)
+
     // Store the array of button objects
     nodeEl.button = buttons; // Now each entry has value, subHeader, subFooter, and subBody
 }

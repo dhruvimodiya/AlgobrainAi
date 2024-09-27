@@ -137,7 +137,7 @@ const InteractiveNode = ({ data }) => {
   const [isDeleted, setIsDeleted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
-  const [editMode, setEditMode] = useState({}); // Change editMode to an object
+  const [editMode, setEditMode] = useState(Array(buttons.length).fill(false));
 const [buttonTypes, setButtonTypes] = useState(Array(buttons.length).fill('normal'));
 const [textContent, setTextContent] = useState(''); // New state for text content
 
@@ -360,21 +360,33 @@ setShowOptions(false);
       {/* Dynamic buttons with handles and delete functionality */}
       {buttons.map((button, index) => (
   <div key={index} style={{ 
-    border: '1px solid #ccc', 
-    padding: '5px', 
-    borderRadius: '5px', 
-    border:'1px solid #50B8E2',
-    marginBottom: '10px',
-    marginTop:'7px',
-    marginLeft:'10px',
-    position: 'relative', 
-    backgroundColor: '#f9f9f9',
-    width: '208px',  
-    height:'30px',
-  }}
-  id={`node${data.uniqueId}_button${index}`}
-   >
-    
+      border: '1px solid #ccc', 
+      padding: '5px', 
+      borderRadius: '5px', 
+      border:'1px solid #50B8E2',
+      marginBottom: '10px',
+      marginTop:'7px',
+      marginLeft:'10px',
+      position: 'relative', 
+      backgroundColor: '#f9f9f9',
+      width: '208px',  
+      height:'30px',
+    }}
+    id={`node${data.uniqueId}_button${index}`}
+    onMouseEnter={(e) => {
+      const icons = e.currentTarget.querySelectorAll('.icon'); // Get the icons
+      icons.forEach(icon => {
+        icon.style.visibility = 'visible'; // Show icons on hover
+      });
+    }} 
+    onMouseLeave={(e) => {
+      const icons = e.currentTarget.querySelectorAll('.icon'); // Get the icons
+      icons.forEach(icon => {
+        icon.style.visibility = 'hidden'; // Hide icons when not hovered
+      });
+    }}
+    >
+
     {/* Left Handle */}
     <Handle
       type="target"
@@ -388,44 +400,64 @@ setShowOptions(false);
         transform: 'translateY(-50%)' 
       }}
     />
-
-
-
+    {/* ------------------------------------------------------------- */}
     {/* Edit Mode */}
     {editMode[index] ? (
       <>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', backgroundColor:'gray' }}>
-      <input type='hidden'/>
-          <select
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', backgroundColor:'gray' }}>
+        <select
+          style={{
+            width: '100%',
+            padding: '8px',
+            marginBottom: '8px',
+            border: '1px solid #ddd',
+            borderRadius: '4px',
+            fontSize: '12px',
+            backgroundColor: '#fff',
+          }}
+          // id={`node${data.uniqueId}_subheader`}
+          id={`node${data.uniqueId}_button${index}_subheader`}
+          value={buttonTypes[index]}
+          onChange={(e) => {
+            const newType = e.target.value;
+            setButtonTypes((prev) => {
+              const updated = [...prev];
+              updated[index] = newType;
+              return updated;
+            });
+          }}
+        >
+          <option value="normal">Button</option>
+          <option value="url">URL</option>
+          <option value="number">Only Number</option>
+        </select>
+
+        
+          {/* First input box for custom message */}
+          <input
+            id={`node${data.uniqueId}_button${index}_subbody`}
             style={{
-              width: '100%',
               padding: '8px',
-              marginBottom: '8px',
-              border: '1px solid #ddd',
               borderRadius: '4px',
-              fontSize: '12px',
+              border: '1px solid #ddd',
               backgroundColor: '#fff',
+              fontSize: '14px',
             }}
-            id={`node${data.uniqueId}_button${index}_subheader`}
-            value={buttonTypes[index]}
+            type="text"
+            value={button}
             onChange={(e) => {
-              const newType = e.target.value;
-              setButtonTypes((prev) => {
+              const newButtonName = e.target.value;
+              setButtons((prev) => {
                 const updated = [...prev];
-                updated[index] = newType;
+                updated[index] = newButtonName;  // Ensure button name updates here
                 return updated;
               });
             }}
-          >
-            <option value="normal">Button</option>
-            <option value="url">URL</option>
-            <option value="number">Only Number</option>
-          </select>
+          />
 
-          {/* Input fields for button name and type */}
-          
+          {/* Second input box for entering input based on the selected type */}
           <input
-            id={`node${data.uniqueId}_button${index}_subfooter`}
+             id={`node${data.uniqueId}_button${index}_subfooter`}
             style={{
               padding: '8px',
               borderRadius: '4px',
@@ -438,7 +470,7 @@ setShowOptions(false);
         </div>
 
         <button 
-          id={`node${data.uniqueId}_subbutton`}
+           id={`node${data.uniqueId}_button${index}_subbutton`}
           style={{
             marginTop: '10px',
             padding: '6px 12px',
@@ -448,76 +480,70 @@ setShowOptions(false);
             borderRadius: '4px',
             cursor: 'pointer',
           }}
-          onClick={() => setEditMode((prev) => ({ ...prev, [index]: false }))} // Toggle edit mode
+          onClick={() => setEditMode((prev) => {
+            const updated = [...prev];
+            updated[index] = false;
+            return updated;
+          })}
         >
           Done
         </button>
       </>
     ) : (
-      // Display button type and name inside the button
-      <button 
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-          padding: '5px',
-          backgroundColor: '#f0f0f0',
-          border: 'none',
-          fontSize: '14px',
-          cursor: 'pointer',
-        }}
-      >
-        {/* Dynamically display button name and type */}
-        {buttonTypes[index] === 'normal' && `Button: ${button}`}
-        {buttonTypes[index] === 'url' && `URL: ${button}`}
-        {buttonTypes[index] === 'number' && `Number: ${button}`}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '14px' }}>
+        {/* Display message based on button type */}
+        <span>
+          {buttonTypes[index] === 'normal' && `Button: ${button}`}
+          {buttonTypes[index] === 'url' && `URL: ${button}`}
+          {buttonTypes[index] === 'number' && `Number: ${button}`}
+        </span>
 
         {/* Edit and Delete Icons */}
-        <div className="icon" style={{ display: 'flex', alignItems: 'center' }}>
+        <div className="icon" style={{ display: 'flex', alignItems: 'center', visibility: 'hidden', transition: 'visibility 0.3s ease' }}>
           <MdEdit 
             style={{
               cursor: 'pointer',
               color: '#007bff',
               fontSize: '15px',
               marginRight: '10px',
+              transition: 'color 0.3s, transform 0.3s',
             }}
-            onClick={() => setEditMode((prev) => ({ ...prev, [index]: true }))} // Toggle edit mode
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#0056b3'; // Darker blue on hover
+              e.currentTarget.style.transform = 'scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = '#007bff';
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+            onClick={() => setEditMode((prev) => {
+              const updated = [...prev];
+              updated[index] = true;
+              return updated;
+            })}
           />
+
           <MdDelete 
             style={{
               cursor: 'pointer',
               color: '#dc3545',
               fontSize: '15px',
+              transition: 'color 0.3s, transform 0.3s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#c82333'; // Darker red on hover
+              e.currentTarget.style.transform = 'scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = '#dc3545';
+              e.currentTarget.style.transform = 'scale(1)';
             }}
             onClick={() => handleDeleteButton(index)}
           />
         </div>
-      </button>
+      </div>
     )}
     
-
-    <input
-            id={`node${data.uniqueId}_button${index}_subbody`}
-            style={{
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #ddd',
-              backgroundColor: '#fff',
-              fontSize: '14px',
-            }}
-            placeholder={`node${data.uniqueId}_button${index}_subbody`}
-            type={editMode[index] ?"text":"hidden"}
-            value={button}
-            onChange={(e) => {
-              const newButtonName = e.target.value;
-              setButtons((prev) => {
-                const updated = [...prev];
-                updated[index] = newButtonName; // Ensure button name updates here
-                return updated;
-              });
-            }}
-          />
     {/* Right Handle */}
     <Handle
       type="source"
@@ -535,11 +561,9 @@ setShowOptions(false);
   </div>
 ))}
 
-
-
       {/* Add button */}
       {buttons.length < 3 && (
-        <button style={addButtonStyle} onClick={addNewButton}>
+        <button style={addButtonStyle} onClick={addNewButton} >
           Add Button
         </button>
       )}

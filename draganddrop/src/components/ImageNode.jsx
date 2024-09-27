@@ -71,7 +71,7 @@ const ImageNode = ({ data, nodeId }) => {
 
     // Trigger file input dialog
     const triggerFileInput = () => {
-        document.getElementById(`fileInput-${nodeId}`).click();
+        document.getElementById(`node${data.uniqueId}_header`).click();
     };
 
     // Handle node delete
@@ -81,6 +81,7 @@ const ImageNode = ({ data, nodeId }) => {
 
     return (
         <div
+            id={`node${data.uniqueId}`}
             style={nodeStyle(isDeleted)}
             onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
             onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
@@ -105,7 +106,7 @@ const ImageNode = ({ data, nodeId }) => {
             {/* Hidden file input for selecting an image */}
             <input
                 type="file"
-                id={`fileInput-${nodeId}`} // Use nodeId for unique file input
+                id={`node${data.uniqueId}_header`}// Use nodeId for unique file input
                 style={{ display: 'none' }}
                 accept="image/*"
                 onChange={handleImageUpload}

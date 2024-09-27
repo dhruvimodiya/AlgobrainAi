@@ -65,6 +65,7 @@ const crossIconStyle = {
 };
 
 const FlowStart = ({ data }) => {
+  // console.log("🚀 ~ FlowStart ~ data:", data)
   const [inputs, setInputs] = useState(['', '', '']); // Manage state for input fields
   const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
   const [isHovered, setIsHovered] = useState(false); // Manage hover state
@@ -90,6 +91,7 @@ const FlowStart = ({ data }) => {
   return (
     <div
       style={nodeStyle(isDeleted)}
+      id={`node${data.uniqueId}`}
       onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
       onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
     >
@@ -101,17 +103,19 @@ const FlowStart = ({ data }) => {
         <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
       </div>
 
-      <div className='body'>
+      <div>
+        {/* Render input fields with unique IDs */}
         {inputs.map((input, index) => (
           <div key={index} style={{ position: 'relative' }}>
-            <input 
-              type="text" 
-              style={bodyStyle} 
-              value={input} 
+            <input
+              type="text"
+              id={`node${data.uniqueId}_body`} // Unique ID for each input field
+              style={bodyStyle}
+              value={input}
               onChange={(e) => handleInputChange(index, e.target.value)} // Handle input change
             />
-            <RxCross2 
-              style={crossIconStyle} 
+            <RxCross2
+              style={crossIconStyle}
               onClick={() => handleRemoveInput(index)} // Handle input removal
             />
           </div>

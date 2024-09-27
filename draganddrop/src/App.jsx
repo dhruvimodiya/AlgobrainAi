@@ -5,8 +5,8 @@ import DragItem from "./components/DragItem";
 import DropZone from "./components/DropZone";
 import { BiRectangle } from "react-icons/bi";
 import { MdPermMedia } from "react-icons/md";
-import { FaLocationDot  } from "react-icons/fa6";
-import { FaFilePdf,FaImage ,FaVideo } from "react-icons/fa6";
+import { FaLocationDot } from "react-icons/fa6";
+import { FaFilePdf, FaImage, FaVideo } from "react-icons/fa6";
 import { MdLocalOffer } from "react-icons/md";
 
 const App = () => {
@@ -41,29 +41,29 @@ const App = () => {
         >
           <h2 style={{ textAlign: "center" }}>Drag Items</h2>
 
-          {/* Container for DragItems - 2 columns per row */}
+          {/* Container for DragItems - responsive layout */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr 1fr",  // Two equal columns
+              gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",  // Responsive grid
               gap: "10px",  // Space between items
             }}
           >
             {/* Each DragItem and label */}
             {[
               { type: "FlowStart", icon: <BiRectangle />, label: "Flow-Start" },
-              { type: "ReqIntervention", icon: <MdPermMedia />, label: "Text" },
-              { type: "ImageNode", icon: <FaImage  />, label: "Image" },
-              { type: "VideoNode", icon: <FaVideo  />, label: "Video" },
-              { type: "PdfNode", icon: <FaFilePdf  />, label: "PDF" },
+              { type: "Text", icon: <MdPermMedia />, label: "Text" },
+              { type: "ImageNode", icon: <FaImage />, label: "Image" },
+              { type: "VideoNode", icon: <FaVideo />, label: "Video" },
+              { type: "PdfNode", icon: <FaFilePdf />, label: "PDF" },
               { type: "Interactive", icon: <MdPermMedia />, label: "Interactive" },
               { type: "MapNode", icon: <FaLocationDot />, label: "Location" },
               { type: "LinkNode", icon: <MdLocalOffer />, label: "Special Offer" },
-              { type: "ShippingNode", icon: <FaImage  />, label: "Shipping" },
+              { type: "ShippingNode", icon: <FaImage />, label: "Shipping" },
             ].map((item, index) => (
               <div key={index} style={{ textAlign: "center" }}>
                 <DragItem type={item.type} name={item.icon} />
-                <p style={{ marginRight: '30px', fontSize: '12px', color: 'black',}}>{item.label}</p>
+                <p style={{ marginRight: '30px', fontSize: '12px', color: 'black', }}>{item.label}</p>
               </div>
             ))}
           </div>

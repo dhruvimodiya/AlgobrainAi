@@ -85,6 +85,7 @@ const VideoNode = ({ data }) => {
 
   return (
     <div
+    id={`node${data.uniqueId}`}
       style={nodeStyle(isDeleted, isHovered)}
       onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
       onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
@@ -100,7 +101,8 @@ const VideoNode = ({ data }) => {
       {/* Hidden file input for selecting a video */}
       <input
         type="file"
-        id="videoInput"
+        id={`node${data.uniqueId}_body`}
+        // id="videoInput"
         style={{ display: 'none' }}
         accept="video/*"
         onChange={handleVideoUpload}
@@ -120,7 +122,7 @@ const VideoNode = ({ data }) => {
           <MdVideocam
             size={24}
             color="green"
-            onClick={() => document.getElementById('videoInput').click()} // Trigger video file input on click
+            onClick={() => document.getElementById(`node${data.uniqueId}_body`).click()} // Trigger video file input on click
           />
           <span style={{ marginLeft: '8px' ,fontSize:'10px',marginTop:'4px',color:'green'}}>Click Here</span>
         </div>

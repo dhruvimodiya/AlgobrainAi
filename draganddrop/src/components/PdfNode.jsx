@@ -65,6 +65,7 @@ const PdfNode = ({ data }) => {
 
   return (
     <div
+    id={`node${data.uniqueId}`}
       style={nodeStyle(isDeleted)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -79,7 +80,7 @@ const PdfNode = ({ data }) => {
       {/* Hidden file input for selecting a PDF */}
       <input
         type="file"
-        id="pdfInput"
+        id={`node${data.uniqueId}_body`}
         style={{ display: 'none' }}
         accept="application/pdf"
         onChange={handlePdfUpload}
@@ -89,7 +90,7 @@ const PdfNode = ({ data }) => {
         <FaFilePdf 
           size={24}
           color="green"
-          onClick={() => document.getElementById('pdfInput').click()} // Trigger PDF file input on click
+          onClick={() => document.getElementById(`node${data.uniqueId}_body`).click()} // Trigger PDF file input on click
           style={{ cursor: 'pointer' }}
         />
         <span style={{ marginLeft: '8px', fontSize: '12px', color: 'green', alignItems:'center'}}>

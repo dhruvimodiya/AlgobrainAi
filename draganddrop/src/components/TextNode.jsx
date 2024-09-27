@@ -62,7 +62,7 @@ const deleteIconStyle = (isHovered) => ({
   transition: 'opacity 0.3s', // Smooth fade-in/out
 });
 
-const ReqIntervention = ({ data }) => {
+const TextNode = ({ data }) => {
   const [text, setText] = useState('');
   const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
   const [isHovered, setIsHovered] = useState(false); // Manage hover state
@@ -70,7 +70,7 @@ const ReqIntervention = ({ data }) => {
   // Handle text area input
   const handleTextChange = (event) => {
     setText(event.target.value);
-    console.log(`Text area input: ${event.target.value}`); // Log text area input
+    // console.log(`Text area input: ${event.target.value}`); // Log text area input
   };
 
   // Handle node delete
@@ -80,6 +80,7 @@ const ReqIntervention = ({ data }) => {
 
   return (
     <div
+      id={`node${data.uniqueId}`}
       style={nodeStyle(isDeleted)}
       onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
       onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
@@ -95,6 +96,7 @@ const ReqIntervention = ({ data }) => {
       {/* Text input area with handles on both left and right sides */}
       <div style={welcomeStyle}>
         <textarea
+        id={`node${data.uniqueId}_body`}
           placeholder="Type something..."
           style={textAreaStyle}
           value={text}
@@ -121,4 +123,4 @@ const ReqIntervention = ({ data }) => {
   );
 };
 
-export default ReqIntervention;
+export default TextNode;

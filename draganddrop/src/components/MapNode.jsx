@@ -104,6 +104,7 @@ const MapNode = ({ data }) => {
     };
   return (
     <div
+      id={`node${data.uniqueId}`}
       style={nodeStyle(isDeleted)}
       onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
       onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
@@ -118,7 +119,7 @@ const MapNode = ({ data }) => {
 
       {/* Map section */}
       <div className='map'>
-        <img style={mapStyle} src="https://developers.google.com/static/maps/images/landing/hero_maps_static_api.png" alt="" />
+        <img style={mapStyle} id={`node${data.uniqueId}_header`} src="https://developers.google.com/static/maps/images/landing/hero_maps_static_api.png" alt="" />
       </div>
 
       {/* Textarea */}
@@ -126,11 +127,13 @@ const MapNode = ({ data }) => {
         <textarea 
           placeholder="Enter your notes here..." // Optional placeholder text
           style={textareaStyle}
+          id={`node${data.uniqueId}_body`}
         />
       </div>
 
      <div className="body" style={{ position: 'relative', marginLeft: '10px' }}>
         <input 
+          id={`node${data.uniqueId}_footer`}
           type="text" 
           style={bodyStyle} 
           value={inputValue} 
