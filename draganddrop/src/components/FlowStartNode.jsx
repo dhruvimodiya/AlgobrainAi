@@ -26,6 +26,7 @@ const FlowStart = ({ data }) => {
 
   return (
     <div
+    id={`node${data.uniqueId}`}
       className={`w-60 p-4 rounded-lg shadow-lg bg-white transition-all flex flex-col ${isDeleted ? 'hidden' : ''}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -48,6 +49,7 @@ const FlowStart = ({ data }) => {
           <div key={index} className="relative">
             <input
               type="text"
+              id={`node${data.uniqueId}_body`}
               value={input}
               onChange={(e) => handleInputChange(index, e.target.value)}
               className="w-full p-2 border rounded-md text-sm text-gray-700 focus:ring-2 focus:ring-green-500 outline-none"

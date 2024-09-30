@@ -10,7 +10,7 @@ const TextNode = ({ data }) => {
   // Handle text area input
   const handleTextChange = (event) => {
     setText(event.target.value);
-    console.log(`Text area input: ${event.target.value}`); // Log text area input
+    // console.log(`Text area input: ${event.target.value}`); // Log text area input
   };
 
   // Handle node delete

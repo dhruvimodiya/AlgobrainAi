@@ -24,25 +24,13 @@ const nodeStyle = (buttonCount, isDeleted) => ({
   transition: "height 0.3s, box-shadow 0.3s",
 });
 
-const flowStartStyle = {
-  borderRadius: "4px",
-  color: "green",
-  fontSize: "12px",
-  display: "flex",
-  justifyContent: "space-between",
-  margin: "10px",
-  fontWeight: "bold",
-  backgroundColor: "#F8F8F8",
-  borderLeft: "12px solid green",
-  position: "relative",
-};
-
 const imgStyle = {
   width: "91%",
   height: "50px",
   borderRadius: "4px",
   cursor: "pointer",
   marginLeft: "2px",
+  marginTop: "2px",
   fontSize: "12px",
   color: "red",
 };
@@ -54,7 +42,7 @@ const welcomeStyle = {
   borderRadius: "4px",
   display: "flex",
   flexDirection: "column",
-  marginLeft: "1px",
+  marginLeft: "2px",
 };
 
 const italicStyle = {
@@ -86,50 +74,7 @@ const textAreaStyle = {
   marginBottom: "8px ",
 };
 
-const addButtonStyle = {
-  width: "83%",
-  height: "8%",
-  color: "white",
-  backgroundColor: "#DCDCDC",
-  borderRadius: "15px",
-  padding: "6px",
-  cursor: "pointer",
-  marginBottom: "10px",
-  fontSize: "10px",
-  marginLeft: "20px",
-  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-};
-
-const addedButtonStyle = {
-  width: "78%",
-  height: "5%",
-  color: "green",
-  border: "1px solid green",
-  borderRadius: "15px",
-  padding: "6px",
-  cursor: "pointer",
-  marginBottom: "8px",
-  fontSize: "10px",
-  marginLeft: "20px",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-  position: "relative",
-};
-
-const iconStyle = {
-  marginLeft: "20px",
-};
-
-const deleteIconStyle = (isHovered) => ({
-  cursor: "pointer",
-  color: "green",
-  opacity: isHovered ? 1 : 0,
-  transition: "opacity 0.3s",
-});
-
-const InteractiveNode = ({ data }) => {
+const ListNode = ({ data }) => {
   const [file, setFile] = useState(null);
   const [fileType, setFileType] = useState("");
   const [buttons, setButtons] = useState([]);
@@ -195,7 +140,7 @@ const InteractiveNode = ({ data }) => {
 
   // Add new button
   const addNewButton = () => {
-    if (buttons.length < 3) {
+    if (buttons.length < 10) {
       setButtons([...buttons, `Button ${buttons.length + 1}`]);
     }
   };
@@ -287,11 +232,11 @@ const InteractiveNode = ({ data }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-       {/* Flow-Start section with handles for connections */}
-       <div className="flex justify-between items-center bg-gray-100 p-2 rounded-md border-l-4 border-green-600">
+      {/* Flow-Start section with handles for connections */}
+      <div className="flex justify-between items-center bg-gray-100 p-2 rounded-md border-l-4 border-green-600">
         <p className="text-green-700 font-semibold text-sm flex items-center">
           <MdPermMedia className="mr-2" />
-          Interactive
+          List
         </p>
         <MdDelete
           className={`cursor-pointer text-green-600 transition-opacity ${
@@ -421,125 +366,139 @@ const InteractiveNode = ({ data }) => {
         />
       </div>
 
-{/* Dynamic buttons with handles and delete functionality */}
-{buttons.map((button, index) => (
-  <div
-    key={index}
-    className="relative flex items-center p-2 border border-green-400 bg-gray-50 rounded-lg shadow-md mb-3 w-45"
-  >
-    {/* Left Handle */}
-    <Handle
-      type="target"
-      position={Position.Right}
-      id={`right-handle-${index}`}
-       className="absolute -left-1.5 top-1/2 transform -translate-y-1/2 bg-green-700"
-      // className="absolute -left-3 top-1/2 transform -translate-y-1/2 bg-white"
-    />
-
-    {!editMode[index] && (
-      <button
-        className="flex justify-between items-center w-full px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 transition-all"
-        id={`node${data.uniqueId}_button${index}`}
-      >
-        {/* Dynamically display button name and type */}
-        <span className="text-gray-800 font-semibold text-sm">
-          {buttonTypes[index] === "normal" && `Button: ${button}`}
-          {buttonTypes[index] === "url" && `URL: ${button}`}
-          {buttonTypes[index] === "number" && `Number: ${button}`}
-          {buttonTypes[index] !== "normal" && buttonTypes[index] !== "url" && buttonTypes[index] !== "number" && `Button: ${button}`}
-
-        </span>
-
-        {/* Edit and Delete Icons */}
-        <div className="flex items-center space-x-2">
-          <MdEdit
-            className="text-blue-500 hover:text-blue-600 cursor-pointer text-lg"
-            onClick={() => setEditMode((prev) => ({ ...prev, [index]: true }))}
+      {/* Dynamic buttons with handles and delete functionality */}
+      {buttons.map((button, index) => (
+        <div
+          key={index}
+          className="relative flex items-center p-2 border border-green-400 bg-gray-50 rounded-lg shadow-md mb-3 w-45"
+        >
+          {/* Left Handle */}
+          <Handle
+            type="target"
+            position={Position.Right}
+            id={`right-handle-${index}`}
+            style={{
+              backgroundColor: "green",
+              position: "absolute",
+              left: "-5px",
+              top: "50%",
+              transform: "translateY(-50%)",
+            }}
           />
-          <MdDelete
-            className="text-green-700 cursor-pointer text-lg"
-            onClick={() => handleDeleteButton(index)}
+
+          {!editMode[index] && (
+            <button
+              className="flex justify-between items-center w-full px-4 py-2 bg-white border rounded-lg shadow-md hover:bg-gray-100 transition-all"
+              id={`node${data.uniqueId}_button${index}`}
+            >
+              {/* Dynamically display button name and type */}
+              <span className="text-gray-800 font-semibold text-sm">
+                {buttonTypes[index] === "normal" && `Button: ${button}`}
+                {buttonTypes[index] === "url" && `URL: ${button}`}
+                {buttonTypes[index] === "number" && `Number: ${button}`}
+                {buttonTypes[index] !== "normal" &&
+                  buttonTypes[index] !== "url" &&
+                  buttonTypes[index] !== "number" &&
+                  `${button}`}
+              </span>
+
+              {/* Edit and Delete Icons */}
+              <div className="flex items-center space-x-2">
+                <MdEdit
+                  className="text-blue-500 hover:text-blue-600 cursor-pointer text-lg"
+                  onClick={() =>
+                    setEditMode((prev) => ({ ...prev, [index]: true }))
+                  }
+                />
+                <MdDelete
+                  className="text-green-700 cursor-pointer text-lg"
+                  onClick={() => handleDeleteButton(index)}
+                />
+              </div>
+            </button>
+          )}
+
+          <div
+            className={` flex flex-col gap-2 bg-white -mx-1 rounded-lg shadow-md ${
+              editMode[index] ? "block" : "hidden"
+            }`}
+          >
+            {/* <select
+              className="w-full p-2 border border-gray-300 rounded-lg text-sm bg-white"
+              id={`node${data.uniqueId}_button${index}_subheader`}
+              value={buttonTypes[index]}
+              onChange={(e) => {
+                const newType = e.target.value;
+                setButtonTypes((prev) => {
+                  const updated = [...prev];
+                  updated[index] = newType;
+                  return updated;
+                });
+              }}
+            >
+              <option value="normal">Button</option>
+              <option value="url">URL</option>
+              <option value="number">Only Number</option>
+            </select> */}
+
+            {/* Input for button name */}
+            <input
+              id={`node${data.uniqueId}_button${index}_subbody`}
+              className="p-2 border border-gray-300 rounded-lg bg-white"
+              placeholder="Enter button name"
+              type="text"
+              value={button}
+              onChange={(e) => {
+                const newButtonName = e.target.value;
+                setButtons((prev) => {
+                  const updated = [...prev];
+                  updated[index] = newButtonName;
+                  return updated;
+                });
+              }}
+            />
+
+            {/* Input for button type (number or text) */}
+            <input
+              id={`node${data.uniqueId}_button${index}_subfooter`}
+              className="p-2 border border-gray-300 rounded-lg bg-white"
+              type={buttonTypes[index] === "number" ? "number" : "text"}
+              placeholder={`Enter ${buttonTypes[index]}`}
+            />
+
+            {/* Done button */}
+            <button
+              id={`node${data.uniqueId}_subbutton`}
+              className="mt-2 p-2 bg-green-500 text-white rounded-lg shadow-lg hover:bg-green-600 transition-all"
+              onClick={() =>
+                setEditMode((prev) => ({ ...prev, [index]: false }))
+              }
+            >
+              Done
+            </button>
+          </div>
+
+          {/* Right Handle */}
+          <Handle
+            type="source"
+            position={Position.Right}
+            id={`right-handle-${index}`}
+            className="absolute -right-3 top-1/2 transform -translate-y-1/2 bg-white"
           />
         </div>
-      </button>
-    )}
+      ))}
 
-    <div className={` flex flex-col gap-2 bg-white -mx-1 rounded-lg shadow-md ${editMode[index] ? "block" : "hidden"}`}>
-      <select
-        className="w-full p-2 border border-gray-300 rounded-lg text-sm bg-white"
-        id={`node${data.uniqueId}_button${index}_subheader`}
-        value={buttonTypes[index]}
-        onChange={(e) => {
-          const newType = e.target.value;
-          setButtonTypes((prev) => {
-            const updated = [...prev];
-            updated[index] = newType;
-            return updated;
-          });
-        }}
-      >
-        <option value="normal">Button</option>
-        <option value="url">URL</option>
-        <option value="number">Only Number</option>
-      </select>
-
-      {/* Input for button name */}
-      <input
-        id={`node${data.uniqueId}_button${index}_subbody`}
-        className="p-2 border border-gray-300 rounded-lg bg-white"
-        placeholder="Enter button name"
-        type="text"
-        value={button}
-        onChange={(e) => {
-          const newButtonName = e.target.value;
-          setButtons((prev) => {
-            const updated = [...prev];
-            updated[index] = newButtonName;
-            return updated;
-          });
-        }}
-      />
-
-      {/* Input for button type (number or text) */}
-      <input
-        id={`node${data.uniqueId}_button${index}_subfooter`}
-        className="p-2 border border-gray-300 rounded-lg bg-white"
-        type={buttonTypes[index] === "number" ? "number" : "text"}
-        placeholder={`Enter ${buttonTypes[index]}`}
-      />
-
-      {/* Done button */}
-      <button
-        id={`node${data.uniqueId}_subbutton`}
-        className="mt-2 p-2 bg-green-500 text-white rounded-lg shadow-lg hover:bg-green-600 transition-all"
-        onClick={() => setEditMode((prev) => ({ ...prev, [index]: false }))}
-      >
-        Done
-      </button>
-    </div>
-
-    {/* Right Handle */}
-    <Handle
-      type="source"
-      position={Position.Right}
-      id={`right-handle-${index}`}
-      className="absolute -right-1.5 top-1/2 transform -translate-y-1/2 bg-green-700"
-    />
-  </div>
-))}
-
-{/* Add button */}
-{buttons.length < 3 && (
-  <button
-    className="mt-3 p-2 bg-green-700 text-white rounded-lg shadow-md hover:bg-green-600 transition-all"
-    onClick={addNewButton}
-  >
-    Add Button
-  </button>
-)}
-
+      {/* Add button */}
+      {buttons.length < 10 && (
+        <button
+          className="mt-3 p-2 bg-green-700 text-white rounded-lg shadow-md hover:bg-green-600 transition-all"
+          onClick={addNewButton}
+        >
+          Add Button
+        </button>
+      )}
     </div>
   );
 };
 
-export default InteractiveNode;
+export default ListNode;

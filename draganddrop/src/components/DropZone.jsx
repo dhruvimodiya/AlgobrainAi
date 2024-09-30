@@ -19,7 +19,7 @@ import LinkNode from './LinkNode';
 import VideoNode from './VideoNode';
 import PdfNode from './PdfNode';
 import ImageNode from './ImageNode';
-import ShippingNode from './ShippingNode';
+import ListNode from './ListNode';
 import CustomEdge from './CustomEdge';
 
 // Define custom node types
@@ -34,7 +34,7 @@ const nodeTypes = {
   VideoNode: VideoNode,
   PdfNode: PdfNode,
   ImageNode: ImageNode,
-  ShippingNode: ShippingNode,
+  ListNode: ListNode,
 };
 
 const edgeTypes = {
@@ -132,7 +132,7 @@ const DropZone = () => {
           nodeEl.header = nodeHeaderImg ? nodeHeaderImg.value || null : null;
       }
       
-  } else if (selectedNode.type === "Interactive") {
+  } else if (selectedNode.type === "ListNode") {
       console.log("selectedNode.id", selectedNode.id);
       
       const fileInput = document.getElementById(`node${selectedNode.id}_header`);
@@ -177,35 +177,52 @@ const DropZone = () => {
       }
       console.log("dude done:", buttons);
       nodeEl.button = buttons; // Now each entry has value, subHeader, subFooter, and subBody
-  } else if (selectedNode.type === "ShippingNode") {
-      console.log("selectedNode.id", selectedNode.id);
-  
-      // const nodeshipping = document.getElementById(`node${selectedNode.id}_body`);
-      // nodeEl.body = nodeshipping ? nodeshipping.value || null : null;
-      // console.log("🚀 ~ handlePrintDroppedItems ~ nodeshipping:", nodeshipping)
-  
-      // Initialize an array to store button objects
-      const buttons = []; 
-  
-      // Assuming a maximum of 3 buttons
-      for (let i = 0; i < 10; i++) {
-          const buttonElement = document.getElementById(`node${selectedNode.id}_button${i}`);
-          if (buttonElement) {
-              const subBodyElement = document.getElementById(`node${selectedNode.id}_button${i}_body`);
-              let buttonVal = {};
-  
-              if (subBodyElement) {
-                  buttonVal.body = subBodyElement.value || null;
-                  console.log("subBodyElement:", subBodyElement.value);
-              }
-  
-              // Push the button object into the buttons array
-              buttons.push(buttonVal);
-          }
-      }
-      console.log("dude done ----:", buttons);
-      nodeEl.button = buttons; // Now each entry has value, subHeader, subFooter, and subBody
-  }
+  } else if (selectedNode.type === "Interactive") {
+    console.log("selectedNode.id", selectedNode.id);
+    
+    const fileInput = document.getElementById(`node${selectedNode.id}_header`);
+    nodeEl.head = fileInput.files.length > 0 ? fileInput.files[0].name : null;
+
+    const nodeBodyElement = document.getElementById(`node${selectedNode.id}_body`);
+    nodeEl.body = nodeBodyElement ? nodeBodyElement.value || null : null;
+
+    const nodeFooterElement = document.getElementById(`node${selectedNode.id}_footer`);
+    nodeEl.footer = nodeFooterElement ? nodeFooterElement.value || null : null;
+
+    // Initialize an array to store button objects
+    const buttons = []; 
+
+    // Assuming a maximum of 3 buttons
+    for (let i = 0; i < 3; i++) {
+        const buttonElement = document.getElementById(`node${selectedNode.id}_button${i}`);
+        if (buttonElement) {
+            let buttonVal = {};
+
+            const subHeaderElement = document.getElementById(`node${selectedNode.id}_button${i}_subheader`);
+            if (subHeaderElement) {
+                buttonVal.head = subHeaderElement.value || null;
+                console.log("sub header:", subHeaderElement.value);
+            }
+
+            const subBodyElement = document.getElementById(`node${selectedNode.id}_button${i}_subbody`);
+            if (subBodyElement) {
+                buttonVal.body = subBodyElement.value || null;
+                console.log("subBodyElement:", subBodyElement.value);
+            }
+
+            const subFooterElement = document.getElementById(`node${selectedNode.id}_button${i}_subfooter`);
+            if (subFooterElement) {
+                buttonVal.footer = subFooterElement.value || null;
+                console.log("subFooterElement:", subFooterElement.value);
+            }
+
+            // Push the button object into the buttons array
+            buttons.push(buttonVal);
+        }
+    }
+    console.log("dude done:", buttons);
+    nodeEl.button = buttons; // Now each entry has value, subHeader, subFooter, and subBody
+}
   
 
     console.log("nodeEl",nodeEl)

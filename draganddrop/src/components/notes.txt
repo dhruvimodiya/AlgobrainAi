@@ -181,3 +181,64 @@ const kb = {
         }
     }
 };
+
+
+
+
+
+=======================================================================================================
+{
+    "welcome": {
+        type: 'interactive',//text,imae,video
+        data: {
+            interactiveType: "button",
+            body: {
+                text: "Welcome to Algo Brain AI"
+            },
+            action: {
+                buttons: [
+                    {
+                        type: "reply",
+                        reply: {
+                            id: "information",
+                            title: "More Information"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+        "information": {
+        type: 'list',
+        data: {
+            header: {
+                type: "text",
+                text: "Choose Shipping Option"
+            },
+            body: {
+                text: "Which Product You Want?"
+            },
+            footer: {
+                text: "Lucky Shrub: Your gateway to succulents™"
+            },
+            buttonText: "Our Products",
+            sections: [
+                {
+                    title: "I want it ASAP!",
+                    rows: [
+                        {
+                            id: "thankyou",
+                            title: "thank you",
+                        }
+                    ]
+                },
+            ]
+        }
+    },
+    "thankyou": {
+        type: 'text',
+        data: {
+            body: "Our company was founded in 2010 with a mission to deliver innovative technology solutions to businesses worldwide."
+        }
+    }
+    }

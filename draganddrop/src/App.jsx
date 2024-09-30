@@ -58,7 +58,7 @@ const App = () => {
               { type: "PdfNode", icon: <FaFilePdf />, label: "PDF" },
               { type: "Interactive", icon: <MdPermMedia />, label: "Interactive" },
               { type: "MapNode", icon: <FaLocationDot />, label: "Location" },
-              { type: "ShippingNode", icon: <FaImage />, label: "Shipping" },
+              { type: "ListNode", icon: <FaImage />, label: "List" },
             ].map((item, index) => (
               <div key={index} style={{ textAlign: "center" }}>
                 <DragItem type={item.type} name={item.icon} />
