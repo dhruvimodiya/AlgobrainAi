@@ -3,51 +3,6 @@ import React, { useState } from 'react';
 import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
 import { Handle } from 'reactflow';
 
-// Define styles for dynamic adjustment
-const nodeStyle = (isDeleted) => ({
-    width: '240px',
-    height: isDeleted ? '0px' : '180px', // Set a fixed height
-    display: isDeleted ? 'none' : 'flex', // Hide node when deleted
-    flexDirection: 'column',
-    borderRadius: '8px',
-    boxShadow: '0px  4px 8px rgba(0, 128, 0, 0.3)',
-    position: 'relative',
-    backgroundColor: isDeleted ? 'transparent' : 'white',
-    transition: 'box-shadow 0.3s', // Add a smooth transition for hover effects
-});
-
-const flowStartStyle = {
-    borderRadius: '4px',
-    color: 'green',
-    fontSize: '12px',
-    display: 'flex',
-    justifyContent: 'space-between', // Add space between title and delete icon
-    margin: '10px',
-    fontWeight: 'bold',
-    backgroundColor: '#F8F8F8',
-    borderLeft: '12px solid green',
-    position: 'relative',
-};
-
-const imgStyle = {
-    width: '91%',
-    height: '100px',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    margin: '10px',
-};
-
-const iconStyle = {
-    marginLeft: '20px', // Reduced margin for a cleaner look
-};
-
-const deleteIconStyle = (isHovered) => ({
-    cursor: 'pointer',
-    color: 'green',
-    opacity: isHovered ? 1 : 0, // Show icon only when hovered
-    transition: 'opacity 0.3s', // Smooth fade-in/out
-});
-
 const ImageNode = ({ data, nodeId }) => {
     const [images, setImages] = useState({}); // Store image data by nodeId
     const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
@@ -82,50 +37,56 @@ const ImageNode = ({ data, nodeId }) => {
     return (
         <div
             id={`node${data.uniqueId}`}
-            style={nodeStyle(isDeleted)}
+            className={`w-60 h-auto p-4 rounded-lg shadow-lg bg-white transition-all flex flex-col ${isDeleted ? 'hidden' : ''}`}
             onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
             onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
         >
-            {/* Flow-Start section with handles for connections */}
-            <div style={flowStartStyle}>
-                <p>
-                    <MdPermMedia style={iconStyle} /> Media + Buttons
+            {/* Header Section */}
+            <div className="flex justify-between items-center bg-gray-100 p-2 rounded-md border-l-4 border-green-600 mb-2">
+                <p className="text-green-700 font-semibold text-sm flex items-center">
+                    <MdPermMedia className="mr-2" /> Image
                 </p>
-                <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
+                <MdDelete
+                    className={`cursor-pointer text-green-600 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                    onClick={handleDelete}
+                />
             </div>
 
-            {/* Image section */}
-            <div style={imgStyle} onClick={triggerFileInput}>
+            {/* Image Section */}
+            <div 
+                className="w-full h-24 rounded-md border border-gray-300 flex items-center justify-center cursor-pointer hover:shadow-md transition-shadow"
+                onClick={triggerFileInput}
+            >
                 <img
                     src={images[nodeId] || "https://t3.ftcdn.net/jpg/05/95/78/78/360_F_595787852_efGpIfJmAJxcof7PBsQsDmirsZ3R8o50.jpg"}
                     alt="Uploaded"
-                    style={{ height: '100%', width: '100%' }}
+                    className="h-full w-full rounded-md object-cover"
                 />
             </div>
 
             {/* Hidden file input for selecting an image */}
             <input
                 type="file"
-                id={`node${data.uniqueId}_header`}// Use nodeId for unique file input
-                style={{ display: 'none' }}
+                id={`node${data.uniqueId}_header`} // Use nodeId for unique file input
+                className="hidden"
                 accept="image/*"
                 onChange={handleImageUpload}
             />
 
-            {/* Left handle for input */}
+            {/* Left Handle for Input */}
             <Handle
                 type="target"
                 position={Position.Left} // Use Position.Left for proper left alignment
                 id="left-handle" // Unique ID for left handle
-                style={{ borderColor: 'green', backgroundColor: 'white', position: 'absolute', left: '5px' }}
+                className="w-2 h-2 bg-green-700 absolute left-3 top-1/2 transform -translate-y-1/2"
             />
 
-            {/* Right handle for output */}
+            {/* Right Handle for Output */}
             <Handle
                 type="source"
                 position={Position.Right} // Use Position.Right for proper right alignment
                 id="right-handle" // Unique ID for right handle
-                style={{ borderColor: 'green', backgroundColor: 'white', position: 'absolute', left: '226px' }}
+                className="w-2 h-2 bg-green-700 absolute right-3 top-1/2 transform -translate-y-1/2"
             />
         </div>
     );

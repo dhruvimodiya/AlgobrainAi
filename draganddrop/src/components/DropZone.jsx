@@ -113,7 +113,7 @@ const DropZone = () => {
     let nodeEl={
       type:selectedNode.type,
     }
-    if (selectedNode.type === "Text") {
+    if (selectedNode.type === "Text" || selectedNode.type === "FlowStart" || selectedNode.type === "ImageNode" || selectedNode.type === "VideoNode" || selectedNode.type === "PdfNode" || selectedNode.type === "MapNode") {
       const nodeBodyElement = document.getElementById(`node${selectedNode.id}_body`);
       if (nodeBodyElement) {
           nodeEl.body = nodeBodyElement.value || null;
@@ -121,113 +121,92 @@ const DropZone = () => {
           console.warn(`Element with ID node${selectedNode.id}_body not found.`);
           nodeEl.body = null; // or a default value
       }
-  } if (selectedNode.type === "Interactive") {
-    console.log("selectedNode.id", selectedNode.id);
-    
-    // Get the file input element for the selected node
-    const fileInput = document.getElementById(`node${selectedNode.id}_header`);
-
-    // Get the file name or null if no file is selected
-    nodeEl.head = fileInput.files.length > 0 ? fileInput.files[0].name : fileInput.value || null;
-
-    // Get values from the text areas
-    const nodeBodyElement = document.getElementById(`node${selectedNode.id}_body`);
-    nodeEl.body = nodeBodyElement ? nodeBodyElement.value || null : null;
-
-    const nodeFooterElement = document.getElementById(`node${selectedNode.id}_footer`);
-    nodeEl.footer = nodeFooterElement ? nodeFooterElement.value || null : null;
-
-    // Initialize an array to store button objects
-    const buttons = []; 
-
-    // Assuming a maximum of 3 buttons
-    for (let i = 0; i < 3; i++) {
-        const buttonElement = document.getElementById(`node${selectedNode.id}_button${i}`);
-        if (buttonElement) {
   
-            
-            // Get corresponding sub-header, sub-footer, and sub-body elements
-            const subHeaderElement = document.getElementById(`node${selectedNode.id}_button${i}_subheader`);
-            const subBodyElement = document.getElementById(`node${selectedNode.id}_button${i}_subbody`);
-            const subFooterElement = document.getElementById(`node${selectedNode.id}_button${i}_subfooter`);
-
-            let buttonVal={}
-            if(subHeaderElement){
-              buttonVal.head=subHeaderElement.value||null
-              console.log("sub header :",subHeaderElement.value)
-            }
-
-            if(subBodyElement){
-              buttonVal.body=subBodyElement.value||null
-
-              console.log("subBodyElement  :",subBodyElement.value)
-            }
-            if(subFooterElement){
-              buttonVal.footer=subFooterElement.value||null
-
-              console.log("subFooterElement  :",subFooterElement.value)
-            }
-            
-            // Create a button object with all relevant data
-            
-
-
-
-            // Push the button object into the buttons array
-            buttons.push(buttonVal);
-        }
-    }
-console.log("dude done :",buttons)
-    // Store the array of button objects
-    nodeEl.button = buttons; // Now each entry has value, subHeader, subFooter, and subBody
-}
- else if (selectedNode.type === "FlowStart") {
-      const nodeBodyElement = document.getElementById(`node${selectedNode.id}_body`);
-      if (nodeBodyElement) {
-          nodeEl.body = nodeBodyElement.value || null;
-      } else {
-          console.warn(`Element with ID node${selectedNode.id}_body not found.`);
-          nodeEl.body = null; // or a default value
+      if (selectedNode.type === "MapNode") {
+          const nodeFooterElement = document.getElementById(`node${selectedNode.id}_footer`);
+          nodeEl.footer = nodeFooterElement ? nodeFooterElement.value || null : null;
       }
-  }
-  else if(selectedNode.type === "ImageNode"){
-    const nodeHeaderImg = document.getElementById(`node${selectedNode.id}_header`);
-    if (nodeHeaderImg) {
-        nodeEl.header = nodeHeaderImg.value || null;
-    } else {
-        console.warn(`Element with ID node${selectedNode.id}_header not found.`);
-        nodeEl.header = null; // or a default value
-    }
-  }
-  else if(selectedNode.type === "VideoNode"){
-    const nodeBodyVd = document.getElementById(`node${selectedNode.id}_body`);
-    if (nodeBodyVd) {
-        nodeEl.body = nodeBodyVd.value || null;
-    } else {
-        console.warn(`Element with ID node${selectedNode.id}_body not found.`);
-        nodeEl.body = null; // or a default value
-    }
   
-  }else if(selectedNode.type === "PdfNode"){
-    const nodeBodypdf = document.getElementById(`node${selectedNode.id}_body`);
-    if (nodeBodypdf) {
-        nodeEl.body = nodeBodypdf.value || null;
-    } else {
-        console.warn(`Element with ID node${selectedNode.id}_body not found.`);
-        nodeEl.body = null; // or a default value
-    }
-  }else if(selectedNode.type === "MapNode"){
-    const nodemap = document.getElementById(`node${selectedNode.id}_body`);
-    if (nodemap) {
-        nodeEl.body = nodemap.value || null;
-    } else {
-        console.warn(`Element with ID node${selectedNode.id}_body not found.`);
-        nodeEl.body = null; // or a default value
-    }
-
-    const nodeFootermap = document.getElementById(`node${selectedNode.id}_footer`);
-    nodeEl.footer = nodeFootermap ? nodeFootermap.value || null : null;
+      if (selectedNode.type === "ImageNode") {
+          const nodeHeaderImg = document.getElementById(`node${selectedNode.id}_header`);
+          nodeEl.header = nodeHeaderImg ? nodeHeaderImg.value || null : null;
+      }
+      
+  } else if (selectedNode.type === "Interactive") {
+      console.log("selectedNode.id", selectedNode.id);
+      
+      const fileInput = document.getElementById(`node${selectedNode.id}_header`);
+      nodeEl.head = fileInput.files.length > 0 ? fileInput.files[0].name : null;
+  
+      const nodeBodyElement = document.getElementById(`node${selectedNode.id}_body`);
+      nodeEl.body = nodeBodyElement ? nodeBodyElement.value || null : null;
+  
+      const nodeFooterElement = document.getElementById(`node${selectedNode.id}_footer`);
+      nodeEl.footer = nodeFooterElement ? nodeFooterElement.value || null : null;
+  
+      // Initialize an array to store button objects
+      const buttons = []; 
+  
+      // Assuming a maximum of 3 buttons
+      for (let i = 0; i < 3; i++) {
+          const buttonElement = document.getElementById(`node${selectedNode.id}_button${i}`);
+          if (buttonElement) {
+              let buttonVal = {};
+  
+              const subHeaderElement = document.getElementById(`node${selectedNode.id}_button${i}_subheader`);
+              if (subHeaderElement) {
+                  buttonVal.head = subHeaderElement.value || null;
+                  console.log("sub header:", subHeaderElement.value);
+              }
+  
+              const subBodyElement = document.getElementById(`node${selectedNode.id}_button${i}_subbody`);
+              if (subBodyElement) {
+                  buttonVal.body = subBodyElement.value || null;
+                  console.log("subBodyElement:", subBodyElement.value);
+              }
+  
+              const subFooterElement = document.getElementById(`node${selectedNode.id}_button${i}_subfooter`);
+              if (subFooterElement) {
+                  buttonVal.footer = subFooterElement.value || null;
+                  console.log("subFooterElement:", subFooterElement.value);
+              }
+  
+              // Push the button object into the buttons array
+              buttons.push(buttonVal);
+          }
+      }
+      console.log("dude done:", buttons);
+      nodeEl.button = buttons; // Now each entry has value, subHeader, subFooter, and subBody
+  } else if (selectedNode.type === "ShippingNode") {
+      console.log("selectedNode.id", selectedNode.id);
+  
+      // const nodeshipping = document.getElementById(`node${selectedNode.id}_body`);
+      // nodeEl.body = nodeshipping ? nodeshipping.value || null : null;
+      // console.log("🚀 ~ handlePrintDroppedItems ~ nodeshipping:", nodeshipping)
+  
+      // Initialize an array to store button objects
+      const buttons = []; 
+  
+      // Assuming a maximum of 3 buttons
+      for (let i = 0; i < 10; i++) {
+          const buttonElement = document.getElementById(`node${selectedNode.id}_button${i}`);
+          if (buttonElement) {
+              const subBodyElement = document.getElementById(`node${selectedNode.id}_button${i}_body`);
+              let buttonVal = {};
+  
+              if (subBodyElement) {
+                  buttonVal.body = subBodyElement.value || null;
+                  console.log("subBodyElement:", subBodyElement.value);
+              }
+  
+              // Push the button object into the buttons array
+              buttons.push(buttonVal);
+          }
+      }
+      console.log("dude done ----:", buttons);
+      nodeEl.button = buttons; // Now each entry has value, subHeader, subFooter, and subBody
   }
+  
 
     console.log("nodeEl",nodeEl)
 

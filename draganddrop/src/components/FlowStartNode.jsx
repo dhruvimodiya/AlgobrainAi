@@ -1,133 +1,70 @@
 import { Position } from '@xyflow/react';
 import React, { useState } from 'react';
-import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
+import { MdPermMedia, MdDelete } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx"; 
 import { Handle } from 'reactflow';
-import { RxCross2 } from "react-icons/rx"; // Import cross icon
-
-// Define styles for fixed height
-const nodeStyle = (isDeleted) => ({
-  width: '240px',
-  height: isDeleted ? '0px' : '200px', // Set a fixed height
-  display: isDeleted ? 'none' : 'flex', // Hide node when deleted
-  flexDirection: 'column',
-  borderRadius: '8px',
-  boxShadow: '0px  4px 8px rgba(0, 128, 0, 0.3)',
-  position: 'relative',
-  backgroundColor: isDeleted ? 'transparent' : 'white',
-  transition: 'box-shadow 0.3s', // Add a smooth transition for hover effects
-});
-
-const flowStartStyle = {
-  borderRadius: '4px',
-  color: 'green',
-  fontSize: '12px',
-  display: 'flex',
-  justifyContent: 'space-between', // Add space between title and delete icon
-  margin: '10px',
-  fontWeight: 'bold',
-  backgroundColor: '#F8F8F8',
-  borderLeft: '12px solid green',
-  position: 'relative',
-};
-
-const iconStyle = {
-  marginLeft: '20px', // Reduced margin for a cleaner look
-};
-
-const deleteIconStyle = (isHovered) => ({
-  cursor: 'pointer',
-  color: 'green',
-  opacity: isHovered ? 1 : 0, // Show icon only when hovered
-  transition: 'opacity 0.3s', // Smooth fade-in/out
-});
-
-const bodyStyle = {
-  backgroundColor: '#FFF5EE',
-  marginLeft: '10px',
-  width: '86%',
-  height: '20px',
-  padding: '5px',
-  borderRadius: '5px',
-  outline: "none",
-  border: '1px solid white',
-  fontSize: '12px',
-  marginTop: '7px',
-  position: 'relative', // Make position relative for cross icon
-};
-
-const crossIconStyle = {
-  position: 'absolute',
-  right: '15px',
-  top: '60%',
-  transform: 'translateY(-50%)', // Center the icon vertically
-  cursor: 'pointer',
-  color: 'gray', // Change color as desired
-};
 
 const FlowStart = ({ data }) => {
-  // console.log("🚀 ~ FlowStart ~ data:", data)
-  const [inputs, setInputs] = useState(['', '', '']); // Manage state for input fields
-  const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
-  const [isHovered, setIsHovered] = useState(false); // Manage hover state
+  const [inputs, setInputs] = useState(['', '', '']); 
+  const [isDeleted, setIsDeleted] = useState(false); 
+  const [isHovered, setIsHovered] = useState(false); 
 
-  // Handle node delete
   const handleDelete = () => {
-    setIsDeleted(true); // Set node as deleted
+    setIsDeleted(true); 
   };
 
-  // Handle input field change
   const handleInputChange = (index, value) => {
     const newInputs = [...inputs];
     newInputs[index] = value;
     setInputs(newInputs);
   };
 
-  // Handle input field removal
   const handleRemoveInput = (index) => {
-    const newInputs = inputs.filter((_, i) => i !== index); // Remove input at index
+    const newInputs = inputs.filter((_, i) => i !== index);
     setInputs(newInputs);
   };
 
   return (
     <div
-      style={nodeStyle(isDeleted)}
-      id={`node${data.uniqueId}`}
-      onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
-      onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
+      className={`w-60 p-4 rounded-lg shadow-lg bg-white transition-all flex flex-col ${isDeleted ? 'hidden' : ''}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{ height: '200px' }}
     >
-      {/* Flow-Start section with handles for connections */}
-      <div style={flowStartStyle}>
-        <p>
-          <MdPermMedia style={iconStyle} /> Flow Start
+      {/* Header Section */}
+      <div className="flex justify-between items-center bg-gray-100 p-2 rounded-md border-l-4 border-green-600">
+        <p className="text-green-700 font-semibold text-sm flex items-center">
+          <MdPermMedia className="mr-2" /> Flow Start
         </p>
-        <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
+        <MdDelete
+          className={`cursor-pointer text-green-600 transition-opacity ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+          onClick={handleDelete}
+        />
       </div>
 
-      <div>
-        {/* Render input fields with unique IDs */}
+      {/* Input Fields */}
+      <div className="mt-4 space-y-2">
         {inputs.map((input, index) => (
-          <div key={index} style={{ position: 'relative' }}>
+          <div key={index} className="relative">
             <input
               type="text"
-              id={`node${data.uniqueId}_body`} // Unique ID for each input field
-              style={bodyStyle}
               value={input}
-              onChange={(e) => handleInputChange(index, e.target.value)} // Handle input change
+              onChange={(e) => handleInputChange(index, e.target.value)}
+              className="w-full p-2 border rounded-md text-sm text-gray-700 focus:ring-2 focus:ring-green-500 outline-none"
             />
             <RxCross2
-              style={crossIconStyle}
-              onClick={() => handleRemoveInput(index)} // Handle input removal
+              onClick={() => handleRemoveInput(index)}
+              className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 cursor-pointer"
             />
           </div>
         ))}
       </div>
 
-      {/* Right handle for output */}
+      {/* Right Handle */}
       <Handle
         type="source"
-        position={Position.Right} // Use Position.Right for proper right alignment
-        id="right-handle" // Unique ID for right handle
-        style={{ borderColor: 'green', backgroundColor: 'white', position: 'absolute', left: '226px', top: '2rem' }}
+        position={Position.Right}
+        className="w-2 h-2 bg-green-600 absolute right-2 top-8 transform -translate-y-1/2"
       />
     </div>
   );

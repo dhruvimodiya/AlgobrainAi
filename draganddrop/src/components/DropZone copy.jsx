@@ -144,7 +144,6 @@ const DropZone = () => {
     // Assuming a maximum of 3 buttons
     for (let i = 0; i < 3; i++) {
         const buttonElement = document.getElementById(`node${selectedNode.id}_button${i}`);
-        console.log("🚀 ~ handlePrintDroppedItems ~ buttonElement:-------", buttonElement)
         if (buttonElement) {
             const buttonValue = buttonElement.value || null; // Push the button value
             
@@ -216,6 +215,35 @@ const DropZone = () => {
     const nodeFootermap = document.getElementById(`node${selectedNode.id}_footer`);
     nodeEl.footer = nodeFootermap ? nodeFootermap.value || null : null;
   }
+  else if (selectedNode.type === "ShippingNode") {
+    console.log("selectedNode.id", selectedNode.id);
+
+    // Initialize an array to store button objects
+    const buttons = []; 
+
+    // Assuming a maximum of 10 buttons
+    for (let i = 0; i < 10; i++) {
+        const buttonElementShipping = document.getElementById(`node${selectedNode.id}_button${i}`);
+        
+        // Check if button element exists
+        if (buttonElementShipping) {
+            const buttonValue = buttonElementShipping.value || null; // Get the button value
+            
+            const subBodyElement = document.getElementById(`node${selectedNode.id}_button${i}_body`);
+            // Create a button object with all relevant data
+            const buttonData = {
+                value: buttonValue,
+                subBody: subBodyElement ? subBodyElement.value || null : null
+            };
+
+            // Push the button object into the buttons array
+            buttons.push(buttonData);
+        }
+    }
+
+    // Store the array of button objects
+    nodeEl.button = buttons; // Now each entry has value and subBody
+}
 
     console.log("nodeEl",nodeEl)
 

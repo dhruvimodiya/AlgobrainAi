@@ -1,66 +1,6 @@
 import React, { useState } from 'react';
-import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
-import { Handle, Position } from 'reactflow'; // Import Position for handle positioning
-
-const nodeStyle = (isDeleted) => ({
-  width: '240px',
-  height: isDeleted ? '0px' : '200px', // Set a fixed height
-  display: isDeleted ? 'none' : 'flex', // Hide node when deleted
-  flexDirection: 'column',
-  borderRadius: '8px',
-  boxShadow: '0px  4px 8px rgba(0, 128, 0, 0.3)',
-  position: 'relative',
-  backgroundColor: isDeleted ? 'transparent' : 'white',
-  transition: 'box-shadow 0.3s', // Add a smooth transition for hover effects
-});
-
-const flowStartStyle = {
-  borderRadius: '4px',
-  color: 'green',
-  fontSize: '12px',
-  display: 'flex',
-  justifyContent: 'space-between', // Add space between title and delete icon
-  margin: '10px',
-  fontWeight: 'bold',
-  backgroundColor: '#F8F8F8',
-  borderLeft: '12px solid green',
-  position: 'relative',
-};
-
-const welcomeStyle = {
-  width: '93%',
-  height: '135px',
-  fontSize: '12px',
-  borderRadius: '4px',
-  display: 'flex',
-  flexDirection: 'column',
-  marginLeft: '10px',
-};
-
-const textAreaStyle = {
-  width: '92%',
-  height: '120px', // Increased height
-  borderRadius: '4px',
-  padding: '8px',
-  fontSize: '10px',
-  resize: 'none',
-  color: 'black',
-  border: 'none',
-  backgroundColor: '#F8F8F8',
-  outline: 'none',
-  marginBottom: '8px',
-};
-
-const iconStyle = {
-  marginLeft: '20px', // Reduced margin for a cleaner look
-};
-
-const deleteIconStyle = (isHovered) => ({
-  cursor: 'pointer',
-  color: 'green',
-  opacity: isHovered ? 1 : 0, // Show icon only when hovered
-  transition: 'opacity 0.3s', // Smooth fade-in/out
-});
+import { MdPermMedia, MdDelete } from "react-icons/md";
+import { Handle, Position } from 'reactflow';
 
 const TextNode = ({ data }) => {
   const [text, setText] = useState('');
@@ -70,7 +10,7 @@ const TextNode = ({ data }) => {
   // Handle text area input
   const handleTextChange = (event) => {
     setText(event.target.value);
-    // console.log(`Text area input: ${event.target.value}`); // Log text area input
+    console.log(`Text area input: ${event.target.value}`); // Log text area input
   };
 
   // Handle node delete
@@ -81,42 +21,45 @@ const TextNode = ({ data }) => {
   return (
     <div
       id={`node${data.uniqueId}`}
-      style={nodeStyle(isDeleted)}
+      className={`w-60 h-auto p-4 rounded-lg shadow-lg bg-white transition-all flex flex-col ${isDeleted ? 'hidden' : ''}`}
       onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
       onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
     >
-      {/* Flow-Start section with handles for connections */}
-      <div style={flowStartStyle}>
-        <p>
-          <MdPermMedia style={iconStyle} />Text
+      {/* Flow Start Section */}
+      <div className="flex justify-between items-center bg-gray-100 p-2 rounded-md border-l-4 border-green-600 mb-2">
+        <p className="text-green-700 font-semibold text-sm flex items-center">
+          <MdPermMedia className="mr-2" /> Text
         </p>
-        <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
+        <MdDelete
+          className={`cursor-pointer text-green-600 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+          onClick={handleDelete}
+        />
       </div>
 
-      {/* Text input area with handles on both left and right sides */}
-      <div style={welcomeStyle}>
+      {/* Text Input Area */}
+      <div className="relative w-full">
         <textarea
-        id={`node${data.uniqueId}_body`}
+          id={`node${data.uniqueId}_body`}
           placeholder="Type something..."
-          style={textAreaStyle}
+          className="w-full h-28 p-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-100 resize-none focus:ring-2 focus:ring-green-500 outline-none"
           value={text}
           onChange={handleTextChange}
         />
-        
-       {/* Left handle for input */}
-       <Handle
+
+        {/* Left Handle for Input */}
+        <Handle
           type="target"
-          position={Position.Left} // Use Position.Left for proper left alignment
-          id="left-handle" // Unique ID for left handle
-          style={{ borderColor:'green',backgroundColor:'white',position:'absolute',left:'5px' }}
+          position={Position.Left}
+          id="left-handle"
+          className="w-2 h-2 bg-green-600 absolute -left-1 top-1/2 transform -translate-y-1/2"
         />
 
-        {/* Right handle for output */}
+        {/* Right Handle for Output */}
         <Handle
           type="source"
-          position={Position.Right} // Use Position.Right for proper right alignment
-          id="right-handle" // Unique ID for right handle
-          style={{ borderColor:'green',backgroundColor:'white',position:'absolute',left:'226px'}}
+          position={Position.Right}
+          id="right-handle"
+          className="w-2 h-2 bg-green-600 absolute -right-1 top-1/2 transform -translate-y-1/2"
         />
       </div>
     </div>

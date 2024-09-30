@@ -1,7 +1,7 @@
-import { Position } from '@xyflow/react';
-import React, { useState } from 'react';
-import { MdPermMedia, MdDelete,MdEdit  } from "react-icons/md"; // Import delete icon
-import { Handle } from 'reactflow';
+import { Position } from "@xyflow/react";
+import React, { useState } from "react";
+import { MdPermMedia, MdDelete, MdEdit } from "react-icons/md"; // Import delete icon
+import { Handle } from "reactflow";
 
 // Base values
 const baseNodeHeight = 300; // Base height of the node
@@ -10,137 +10,139 @@ const padding = 60; // Padding for the container
 
 // Define styles for dynamic adjustment
 const nodeStyle = (buttonCount, isDeleted) => ({
-  width: '240px',
+  width: "240px",
   // maxHeight: '400px', // Set a maximum height
-  height: isDeleted ? '0px' : `${baseNodeHeight + buttonHeightIncrement * buttonCount + padding}px`,
-  display: isDeleted ? 'none' : 'flex',
-  flexDirection: 'column',
-  borderRadius: '8px',
-  boxShadow: '0px 4px 8px rgba(0, 128, 0, 0.3)',
-  position: 'relative',
-  backgroundColor: isDeleted ? 'transparent' : 'white',
-  transition: 'height 0.3s, box-shadow 0.3s',
+  height: isDeleted
+    ? "0px"
+    : `${baseNodeHeight + buttonHeightIncrement * buttonCount + padding}px`,
+  display: isDeleted ? "none" : "flex",
+  flexDirection: "column",
+  borderRadius: "8px",
+  boxShadow: "0px 4px 8px rgba(0, 128, 0, 0.3)",
+  position: "relative",
+  backgroundColor: isDeleted ? "transparent" : "white",
+  transition: "height 0.3s, box-shadow 0.3s",
 });
 
-
 const flowStartStyle = {
-  borderRadius: '4px',
-  color: 'green',
-  fontSize: '12px',
-  display: 'flex',
-  justifyContent: 'space-between',
-  margin: '10px',
-  fontWeight: 'bold',
-  backgroundColor: '#F8F8F8',
-  borderLeft: '12px solid green',
-  position: 'relative',
+  borderRadius: "4px",
+  color: "green",
+  fontSize: "12px",
+  display: "flex",
+  justifyContent: "space-between",
+  margin: "10px",
+  fontWeight: "bold",
+  backgroundColor: "#F8F8F8",
+  borderLeft: "12px solid green",
+  position: "relative",
 };
 
 const imgStyle = {
-  width: '91%',
-  height: '50px',
-  borderRadius: '4px',
-  cursor: 'pointer',
-  marginLeft: '12px',
-  fontSize:'12px',
-  color:'red',
+  width: "91%",
+  height: "50px",
+  borderRadius: "4px",
+  cursor: "pointer",
+  marginLeft: "12px",
+  fontSize: "12px",
+  color: "red",
 };
 
 const welcomeStyle = {
-  width: '93%',
-  height: '50px',
-  fontSize: '12px',
-  borderRadius: '4px',
-  display: 'flex',
-  flexDirection: 'column',
-  marginLeft: '10px',
+  width: "93%",
+  height: "50px",
+  fontSize: "12px",
+  borderRadius: "4px",
+  display: "flex",
+  flexDirection: "column",
+  marginLeft: "10px",
 };
 
 const italicStyle = {
- width: '92%',
-  height: '100%',
-  borderRadius: '4px',
-  padding: '8px',
-  fontSize: '10px',
-  resize: 'none',
-  color: 'black',
-  border: 'none',
-  backgroundColor: '#F8F8F8',
-  outline: 'none',
-  marginBottom: '8px ',
-   fontStyle: 'italic'
+  width: "92%",
+  height: "100%",
+  borderRadius: "4px",
+  padding: "8px",
+  fontSize: "10px",
+  resize: "none",
+  color: "black",
+  border: "none",
+  backgroundColor: "#F8F8F8",
+  outline: "none",
+  marginBottom: "8px ",
+  fontStyle: "italic",
 };
 
 const textAreaStyle = {
-  width: '92%',
-  height: '100%',
-  borderRadius: '4px',
-  padding: '8px',
-  fontSize: '10px',
-  resize: 'none',
-  color: 'black',
-  border: 'none',
-  backgroundColor: '#F8F8F8',
-  outline: 'none',
-  marginBottom: '8px ',
+  width: "92%",
+  height: "100%",
+  borderRadius: "4px",
+  padding: "8px",
+  fontSize: "10px",
+  resize: "none",
+  color: "black",
+  border: "none",
+  backgroundColor: "#F8F8F8",
+  outline: "none",
+  marginBottom: "8px ",
 };
 
 const addButtonStyle = {
-  width: '83%',
-  height: '8%',
-  color: 'white',
-  backgroundColor:'#DCDCDC',
-  borderRadius: '15px',
-  padding: '6px',
-  cursor: 'pointer',
-  marginBottom: '10px',
-  fontSize: '10px',
-  marginLeft: '20px',
-  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+  width: "83%",
+  height: "8%",
+  color: "white",
+  backgroundColor: "#DCDCDC",
+  borderRadius: "15px",
+  padding: "6px",
+  cursor: "pointer",
+  marginBottom: "10px",
+  fontSize: "10px",
+  marginLeft: "20px",
+  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
 };
 
 const addedButtonStyle = {
-  width: '78%',
-  height: '5%',
-  color: 'green',
-  border: '1px solid green',
-  borderRadius: '15px',
-  padding: '6px',
-  cursor: 'pointer',
-  marginBottom: '8px',
-  fontSize: '10px',
-  marginLeft: '20px',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-  position: 'relative',
+  width: "78%",
+  height: "5%",
+  color: "green",
+  border: "1px solid green",
+  borderRadius: "15px",
+  padding: "6px",
+  cursor: "pointer",
+  marginBottom: "8px",
+  fontSize: "10px",
+  marginLeft: "20px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+  position: "relative",
 };
 
 const iconStyle = {
-  marginLeft: '20px',
+  marginLeft: "20px",
 };
 
 const deleteIconStyle = (isHovered) => ({
-  cursor: 'pointer',
-  color: 'green',
+  cursor: "pointer",
+  color: "green",
   opacity: isHovered ? 1 : 0,
-  transition: 'opacity 0.3s',
+  transition: "opacity 0.3s",
 });
 
 const InteractiveNode = ({ data }) => {
   const [file, setFile] = useState(null);
-  const [fileType, setFileType] = useState('');
+  const [fileType, setFileType] = useState("");
   const [buttons, setButtons] = useState([]);
-  const [text, setText] = useState('');
-  const [italicText,setItalicText] = useState('');
+  const [text, setText] = useState("");
+  const [italicText, setItalicText] = useState("");
   const [isDeleted, setIsDeleted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [editMode, setEditMode] = useState({}); // Change editMode to an object
-const [buttonTypes, setButtonTypes] = useState(Array(buttons.length).fill('normal'));
-const [textContent, setTextContent] = useState(''); // New state for text content
-
+  const [buttonTypes, setButtonTypes] = useState(
+    Array(buttons.length).fill("normal")
+  );
+  const [textContent, setTextContent] = useState(""); // New state for text content
 
   // Handle file upload and preview
   const handleFileUpload = (event) => {
@@ -159,39 +161,37 @@ const [textContent, setTextContent] = useState(''); // New state for text conten
   // Handle file type selection
   const handleFileTypeSelection = (type) => {
     // If "text" is selected, don't trigger file input, just set the fileType to "text"
-    if (type === 'text') {
-      setFileType('text');
+    if (type === "text") {
+      setFileType("text");
       return;
     }
-  
-    let acceptType = '';
+
+    let acceptType = "";
     switch (type) {
-      case 'image':
-        acceptType = 'image/*';
+      case "image":
+        acceptType = "image/*";
         break;
-      case 'video':
-        acceptType = 'video/*';
+      case "video":
+        acceptType = "video/*";
         break;
-      case 'document':
-        acceptType = '.pdf,.doc,.docx';
+      case "document":
+        acceptType = ".pdf,.doc,.docx";
         break;
       default:
-        acceptType = 'image/*';
+        acceptType = "image/*";
     }
-  
-// Update fileType and trigger file input for non-text types
-setFileType(type);
-const input = document.getElementById(`node${data.uniqueId}_header`); // Correctly referencing the file input's ID
-input.setAttribute('accept', acceptType);
-input.click(); // Trigger file input for image, video, and document types
-setShowOptions(false);
 
+    // Update fileType and trigger file input for non-text types
+    setFileType(type);
+    const input = document.getElementById(`node${data.uniqueId}_header`); // Correctly referencing the file input's ID
+    input.setAttribute("accept", acceptType);
+    input.click(); // Trigger file input for image, video, and document types
+    setShowOptions(false);
 
-    input.setAttribute('accept', acceptType);
+    input.setAttribute("accept", acceptType);
     input.click(); // Trigger file input for image, video, and document types
     setShowOptions(false);
   };
-  
 
   // Add new button
   const addNewButton = () => {
@@ -200,9 +200,9 @@ setShowOptions(false);
     }
   };
 
-  const handleItalicText = (event)=>{
+  const handleItalicText = (event) => {
     setItalicText(event.target.value);
-  }
+  };
 
   // Handle text area input
   const handleTextChange = (event) => {
@@ -223,37 +223,60 @@ setShowOptions(false);
   // Render file preview based on type
   const renderFilePreview = () => {
     // Check if the fileType is 'text' and show the text area directly
-    if (fileType === 'text') {
+    if (fileType === "text") {
       return (
         <textarea
-          style={{ width: '100%', height: '100%', marginTop: '-4px',marginLeft:'-3px'}}
+          style={{
+            width: "100%",
+            height: "100%",
+            marginTop: "-4px",
+            marginLeft: "-3px",
+          }}
           value={textContent}
           onChange={(e) => setTextContent(e.target.value)}
           placeholder="Type your text here..."
         />
       );
     }
-  
+
     // Handle other file types (image, video, document)
     if (!file) return null;
     const fileUrl = URL.createObjectURL(file);
-  
+
     switch (fileType) {
-      case 'image':
-        return <img src={fileUrl} alt="Uploaded" style={{ height: '100%', width: '100%', marginTop: '0px' }} />;
-      case 'video':
-        return <video src={fileUrl} controls style={{ height: '100%', width: '100%' }} />;
-      case 'document':
-        return file.type === 'application/pdf' ? (
-          <iframe src={fileUrl} title="PDF Preview" style={{ height: '100%', width: '100%' }} frameBorder="0" />
+      case "image":
+        return (
+          <img
+            src={fileUrl}
+            alt="Uploaded"
+            style={{ height: "100%", width: "100%", marginTop: "0px" }}
+          />
+        );
+      case "video":
+        return (
+          <video
+            src={fileUrl}
+            controls
+            style={{ height: "100%", width: "100%" }}
+          />
+        );
+      case "document":
+        return file.type === "application/pdf" ? (
+          <iframe
+            src={fileUrl}
+            title="PDF Preview"
+            style={{ height: "100%", width: "100%" }}
+            frameBorder="0"
+          />
         ) : (
-          <a href={fileUrl} target="_blank" rel="noopener noreferrer">Download {file.name}</a>
+          <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+            Download {file.name}
+          </a>
         );
       default:
         return null;
     }
   };
-  
 
   return (
     <div
@@ -262,18 +285,17 @@ setShowOptions(false);
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-
       {/* Flow-Start section with handles for connections */}
       <div style={flowStartStyle}>
         <p>
-          <MdPermMedia style={iconStyle} />Interactive
+          <MdPermMedia style={iconStyle} />
+          Interactive
         </p>
         <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} />
       </div>
 
       {/* File selection area */}
       <div style={imgStyle} onClick={triggerFileInput}>
-     
         <p>Select a file to upload (Image, Video, Document,Text)</p>
       </div>
 
@@ -281,26 +303,47 @@ setShowOptions(false);
       {showOptions && (
         <div
           style={{
-            width: '160px',
-            margin: '10px',
-            backgroundColor: '#fff',
-            padding: '10px',
-            borderRadius: '8px',
-            boxShadow: '0 4px 8px rgba(0, 128, 0, 0.3)',
-            position: 'absolute',
-            top: '65px',
-            left: '232px'
+            width: "160px",
+            margin: "10px",
+            backgroundColor: "#fff",
+            padding: "10px",
+            borderRadius: "8px",
+            boxShadow: "0 4px 8px rgba(0, 128, 0, 0.3)",
+            position: "absolute",
+            top: "65px",
+            left: "232px",
           }}
         >
-          <p className="hoverEffect" onClick={() => handleFileTypeSelection('image')}>Select Image</p>
-          <p className="hoverEffect" onClick={() => handleFileTypeSelection('video')}>Select Video</p>
-          <p className="hoverEffect" onClick={() => handleFileTypeSelection('document')}>Select Document</p>
-          <p className="hoverEffect" onClick={() => handleFileTypeSelection('text')}>Select Text</p> {/* New option for text */}
+          <p
+            className="hoverEffect"
+            onClick={() => handleFileTypeSelection("image")}
+          >
+            Select Image
+          </p>
+          <p
+            className="hoverEffect"
+            onClick={() => handleFileTypeSelection("video")}
+          >
+            Select Video
+          </p>
+          <p
+            className="hoverEffect"
+            onClick={() => handleFileTypeSelection("document")}
+          >
+            Select Document
+          </p>
+          <p
+            className="hoverEffect"
+            onClick={() => handleFileTypeSelection("text")}
+          >
+            Select Text
+          </p>{" "}
+          {/* New option for text */}
         </div>
       )}
 
-<style>
-  {`
+      <style>
+        {`
     .hoverEffect {
       margin: 5px 0;
       cursor: pointer;
@@ -311,33 +354,47 @@ setShowOptions(false);
       color: green;
     }
   `}
-</style>
-
+      </style>
 
       {/* Hidden file input for selecting an image/video/document */}
       <input
         type="file"
         // id="fileInput"
         id={`node${data.uniqueId}_header`}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         onChange={handleFileUpload}
       />
 
       {/* File preview section */}
-      <div style={{ margin: '10px', border: '1px solid green', borderRadius: '4px', padding: '5px',width:'200px',height:'110px'}}>
+      <div
+        style={{
+          margin: "10px",
+          border: "1px solid green",
+          borderRadius: "4px",
+          padding: "5px",
+          width: "200px",
+          height: "110px",
+        }}
+      >
         {renderFilePreview()}
       </div>
       {/* Left handle for input */}
       <Handle
         type="target"
         position={Position.Left}
-        style={{backgroundColor: 'white',fontSize:'15px', position: 'absolute', left: '1px', top: '50%' }}
+        style={{
+          backgroundColor: "white",
+          fontSize: "15px",
+          position: "absolute",
+          left: "1px",
+          top: "50%",
+        }}
       />
 
       {/* Text input area */}
       <div style={welcomeStyle}>
         <textarea
-         id={`node${data.uniqueId}_body`}
+          id={`node${data.uniqueId}_body`}
           placeholder="Type something..."
           style={textAreaStyle}
           value={text}
@@ -348,8 +405,8 @@ setShowOptions(false);
       {/* Text input area  for footer*/}
       <div style={welcomeStyle}>
         <input
-           id={`node${data.uniqueId}_footer`}
-          type='text'
+          id={`node${data.uniqueId}_footer`}
+          type="text"
           placeholder="Type something..."
           style={italicStyle}
           value={italicText}
@@ -357,195 +414,131 @@ setShowOptions(false);
         />
       </div>
 
-      {/* Dynamic buttons with handles and delete functionality */}
-      {buttons.map((button, index) => (
-  <div key={index} style={{ 
-    border: '1px solid #ccc', 
-    padding: '5px', 
-    borderRadius: '5px', 
-    border:'1px solid #50B8E2',
-    marginBottom: '10px',
-    marginTop:'7px',
-    marginLeft:'10px',
-    position: 'relative', 
-    backgroundColor: '#f9f9f9',
-    width: '208px',  
-    height:'30px',
-  }}
-  id={`node${data.uniqueId}_button${index}`}
-   >
-    
+{/* Dynamic buttons with handles and delete functionality */}
+{buttons.map((button, index) => (
+  <div
+    key={index}
+    className="relative flex items-center p-2 border border-blue-400 bg-gray-50 rounded-lg shadow-md mb-3 w-45"
+  >
     {/* Left Handle */}
     <Handle
       type="target"
-      position={Position.Left}
-      id={`left-handle-${index}`}
-      style={{ 
-        backgroundColor: 'white', 
-        position: 'absolute', 
-        left:'-9px',
-        top: '50%', 
-        transform: 'translateY(-50%)' 
-      }}
+      position={Position.Right}
+      id={`right-handle-${index}`}
+      // className="absolute -left-3 top-1/2 transform -translate-y-1/2 bg-white"
+      style={{
+              backgroundColor: "red",
+              position: "absolute",
+              left: "-9px",
+              top: "50%",
+              transform: "translateY(-50%)",
+            }}
     />
 
-
-
-    {/* Edit Mode */}
-    {editMode[index] ? (
-      <>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', backgroundColor:'gray' }}>
-      <input type='hidden'/>
-          <select
-            style={{
-              width: '100%',
-              padding: '8px',
-              marginBottom: '8px',
-              border: '1px solid #ddd',
-              borderRadius: '4px',
-              fontSize: '12px',
-              backgroundColor: '#fff',
-            }}
-            id={`node${data.uniqueId}_button${index}_subheader`}
-            value={buttonTypes[index]}
-            onChange={(e) => {
-              const newType = e.target.value;
-              setButtonTypes((prev) => {
-                const updated = [...prev];
-                updated[index] = newType;
-                return updated;
-              });
-            }}
-          >
-            <option value="normal">Button</option>
-            <option value="url">URL</option>
-            <option value="number">Only Number</option>
-          </select>
-
-          {/* Input fields for button name and type */}
-          
-          <input
-            id={`node${data.uniqueId}_button${index}_subfooter`}
-            style={{
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #ddd',
-              fontSize: '14px',
-            }}
-            type={buttonTypes[index] === 'number' ? 'number' : 'text'}
-            placeholder={`Enter ${buttonTypes[index]}`}
-          />
-        </div>
-
-        <button 
-          id={`node${data.uniqueId}_subbutton`}
-          style={{
-            marginTop: '10px',
-            padding: '6px 12px',
-            backgroundColor: '#4caf50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
-          onClick={() => setEditMode((prev) => ({ ...prev, [index]: false }))} // Toggle edit mode
-        >
-          Done
-        </button>
-      </>
-    ) : (
-      // Display button type and name inside the button
-      <button 
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-          padding: '5px',
-          backgroundColor: '#f0f0f0',
-          border: 'none',
-          fontSize: '14px',
-          cursor: 'pointer',
-        }}
+    {!editMode[index] && (
+      <button
+        className="flex justify-between items-center w-full px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 transition-all"
+        id={`node${data.uniqueId}_button${index}`}
       >
         {/* Dynamically display button name and type */}
-        {buttonTypes[index] === 'normal' && `Button: ${button}`}
-        {buttonTypes[index] === 'url' && `URL: ${button}`}
-        {buttonTypes[index] === 'number' && `Number: ${button}`}
+        <span className="text-gray-800 font-semibold text-sm">
+          {buttonTypes[index] === "normal" && `Button: ${button}`}
+          {buttonTypes[index] === "url" && `URL: ${button}`}
+          {buttonTypes[index] === "number" && `Number: ${button}`}
+          {buttonTypes[index] !== "normal" && buttonTypes[index] !== "url" && buttonTypes[index] !== "number" && `Button: ${button}`}
+
+        </span>
 
         {/* Edit and Delete Icons */}
-        <div className="icon" style={{ display: 'flex', alignItems: 'center' }}>
-          <MdEdit 
-            style={{
-              cursor: 'pointer',
-              color: '#007bff',
-              fontSize: '15px',
-              marginRight: '10px',
-            }}
-            onClick={() => setEditMode((prev) => ({ ...prev, [index]: true }))} // Toggle edit mode
+        <div className="flex items-center space-x-2">
+          <MdEdit
+            className="text-blue-500 hover:text-blue-600 cursor-pointer text-lg"
+            onClick={() => setEditMode((prev) => ({ ...prev, [index]: true }))}
           />
-          <MdDelete 
-            style={{
-              cursor: 'pointer',
-              color: '#dc3545',
-              fontSize: '15px',
-            }}
+          <MdDelete
+            className=" hover:text-green-600 cursor-pointer text-lg"
             onClick={() => handleDeleteButton(index)}
           />
         </div>
       </button>
     )}
-    
 
-    <input
-            id={`node${data.uniqueId}_button${index}_subbody`}
-            style={{
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #ddd',
-              backgroundColor: '#fff',
-              fontSize: '14px',
-            }}
-            placeholder={`node${data.uniqueId}_button${index}_subbody`}
-            type={editMode[index] ?"text":"hidden"}
-            value={button}
-            onChange={(e) => {
-              const newButtonName = e.target.value;
-              setButtons((prev) => {
-                const updated = [...prev];
-                updated[index] = newButtonName; // Ensure button name updates here
-                return updated;
-              });
-            }}
-          />
+    <div className={` flex flex-col gap-2 bg-white p-3 rounded-lg shadow-md ${editMode[index] ? "block" : "hidden"}`}>
+      <select
+        className="w-full p-2 border border-gray-300 rounded-lg text-sm bg-white"
+        id={`node${data.uniqueId}_button${index}_subheader`}
+        value={buttonTypes[index]}
+        onChange={(e) => {
+          const newType = e.target.value;
+          setButtonTypes((prev) => {
+            const updated = [...prev];
+            updated[index] = newType;
+            return updated;
+          });
+        }}
+      >
+        <option value="normal">Button</option>
+        <option value="url">URL</option>
+        <option value="number">Only Number</option>
+      </select>
+
+      {/* Input for button name */}
+      <input
+        id={`node${data.uniqueId}_button${index}_subbody`}
+        className="p-2 border border-gray-300 rounded-lg bg-white"
+        placeholder="Enter button name"
+        type="text"
+        value={button}
+        onChange={(e) => {
+          const newButtonName = e.target.value;
+          setButtons((prev) => {
+            const updated = [...prev];
+            updated[index] = newButtonName;
+            return updated;
+          });
+        }}
+      />
+
+      {/* Input for button type (number or text) */}
+      <input
+        id={`node${data.uniqueId}_button${index}_subfooter`}
+        className="p-2 border border-gray-300 rounded-lg bg-white"
+        type={buttonTypes[index] === "number" ? "number" : "text"}
+        placeholder={`Enter ${buttonTypes[index]}`}
+      />
+
+      {/* Done button */}
+      <button
+        id={`node${data.uniqueId}_subbutton`}
+        className="mt-2 p-2 bg-green-500 text-white rounded-lg shadow-lg hover:bg-green-600 transition-all"
+        onClick={() => setEditMode((prev) => ({ ...prev, [index]: false }))}
+      >
+        Done
+      </button>
+    </div>
+
     {/* Right Handle */}
     <Handle
       type="source"
       position={Position.Right}
       id={`right-handle-${index}`}
-      style={{ 
-        borderColor: 'green', 
-        backgroundColor: 'white', 
-        position: 'absolute', 
-        right: '-6px', 
-        top: '50%', 
-        transform: 'translateY(-50%)' 
-      }}
+      className="absolute -right-3 top-1/2 transform -translate-y-1/2 bg-white"
     />
   </div>
 ))}
 
+{/* Add button */}
+{buttons.length < 3 && (
+  <button
+    className="mt-3 p-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all"
+    onClick={addNewButton}
+  >
+    Add Button
+  </button>
+)}
 
-
-      {/* Add button */}
-      {buttons.length < 3 && (
-        <button style={addButtonStyle} onClick={addNewButton}>
-          Add Button
-        </button>
-      )}
     </div>
   );
 };
-
 
 export default InteractiveNode;

@@ -39,7 +39,7 @@ const App = () => {
             overflowY: 'auto',  // Allow vertical scrolling if items exceed height
           }}
         >
-          <h2 style={{ textAlign: "center", marginBottom:"15px"}}>Drag Items</h2>
+          <h2 style={{ textAlign: "center" }}>Drag Items</h2>
 
           {/* Container for DragItems - responsive layout */}
           <div
@@ -58,6 +58,7 @@ const App = () => {
               { type: "PdfNode", icon: <FaFilePdf />, label: "PDF" },
               { type: "Interactive", icon: <MdPermMedia />, label: "Interactive" },
               { type: "MapNode", icon: <FaLocationDot />, label: "Location" },
+              { type: "LinkNode", icon: <MdLocalOffer />, label: "Special Offer" },
               { type: "ShippingNode", icon: <FaImage />, label: "Shipping" },
             ].map((item, index) => (
               <div key={index} style={{ textAlign: "center" }}>

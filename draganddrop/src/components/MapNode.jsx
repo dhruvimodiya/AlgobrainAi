@@ -1,165 +1,155 @@
 import React, { useState } from 'react';
-import { MdPermMedia, MdDelete } from "react-icons/md"; // Import delete icon
+import { MdPermMedia, MdDelete } from "react-icons/md";
 import { Position } from '@xyflow/react';
 import { Handle } from 'reactflow';
-import { RxCross2 } from "react-icons/rx"; // Import cross icon
+import { RxCross2 } from "react-icons/rx"; 
 
 // Define styles for dynamic adjustment
 const nodeStyle = (isDeleted) => ({
-  width: '240px',
-  height: isDeleted ? '0px' : '320px', // Set a fixed height
-  display: isDeleted ? 'none' : 'flex', // Hide node when deleted
+  width: '260px',
+  height: isDeleted ? '0px' : '310px', 
+  display: isDeleted ? 'none' : 'flex',
   flexDirection: 'column',
-  borderRadius: '8px',
-  boxShadow: '0px  4px 8px rgba(0, 128, 0, 0.3)',
+  borderRadius: '10px',
+  boxShadow: '0 6px 20px rgba(0, 128, 0, 0.25)',
   position: 'relative',
-  backgroundColor: isDeleted ? 'transparent' : 'white',
-  transition: 'box-shadow 0.3s', // Add a smooth transition for hover effects
+  backgroundColor: isDeleted ? 'transparent' : '#FFF', 
+  transition: 'all 0.3s ease',
+  padding: '16px',
+  overflow: 'hidden',
 });
 
-const flowStartStyle = {
-  borderRadius: '4px',
-  color: 'green',
-  fontSize: '12px',
-  display: 'flex',
-  justifyContent: 'space-between', // Add space between title and delete icon
-  margin: '10px',
-  fontWeight: 'bold',
-  backgroundColor: '#F8F8F8',
-  borderLeft: '12px solid green',
-  position: 'relative',
-};
-
 const mapStyle = {
-  width: '218px',
+  width: '100%',
   height: '130px',
-  marginLeft: '10px',
+  borderRadius: '6px',
+  objectFit: 'cover',
+  boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+  marginBottom: '12px',
 };
 
 const textareaStyle = {
   marginTop: '10px',
-  width: '86%', // Make it responsive
-  height: '30px', // Set a fixed height
-  padding: '5px', // Add padding for better appearance
-  borderRadius: '5px',
-  border: 'none', // Add border styling
-  resize: 'none', // Prevent resizing if desired
-  outline: 'none',
+  width: '100%', 
+  height: '40px',
+  padding: '8px',
+  borderRadius: '8px',
+  border: '1px solid #e0e0e0',
   backgroundColor: '#F8F8F8',
+  fontSize: '12px',
+  color: '#333',
+  resize: 'none',
+  outline: 'none',
+  transition: 'border-color 0.2s ease',
 };
 
 const bodyStyle = {
-  backgroundColor: '#FFF5EE',
-  // marginLeft: '10px',
-  width: '89%',
-  height: '35px', // Set a fixed height for inputs
-  padding: '5px',
-  borderRadius: '5px',
-  outline: "none",
-  border: '1px solid white',
+  width: '100%',
+  height: '40px',
+  padding: '8px',
+  borderRadius: '8px',
+  border: '1px solid #e0e0e0',
   fontSize: '12px',
-  // marginTop: '7px',
-  position: 'relative', // Make position relative for cross icon
+  backgroundColor: '#F9F9F9',
+  outline: 'none',
+  transition: 'border-color 0.2s ease',
+  position: 'relative',
+  marginBottom: '12px',
 };
 
 const crossIconStyle = {
   position: 'absolute',
-  right: '15px',
-  top: '50%',
-  transform: 'translateY(-50%)', // Center the icon vertically
+  right: '10px',
+  top: '40%',
+  transform: 'translateY(-50%)',
   cursor: 'pointer',
-  color: 'gray', // Change color as desired
+  color: 'gray',
+  fontSize: '16px',
+  transition: 'color 0.2s ease',
 };
 
-const iconStyle = {
-  marginLeft: '20px', // Reduced margin for a cleaner look
-};
-
-const deleteIconStyle = (isHovered) => ({
-  cursor: 'pointer',
-  color: 'green',
-  opacity: isHovered ? 1 : 0, // Show icon only when hovered
-  transition: 'opacity 0.3s', // Smooth fade-in/out
-});
 
 const MapNode = ({ data }) => {
-  const [inputs, setInputs] = useState(['']); // Manage input fields
-  const [isDeleted, setIsDeleted] = useState(false); // Manage node's deleted state
-  const [isHovered, setIsHovered] = useState(false); // Manage hover state
-  const [inputValue, setInputValue] = useState(''); // State for the single input box
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
-  // Handle node delete
   const handleDelete = () => {
-    setIsDeleted(true); // Set node as deleted
+    setIsDeleted(true);
   };
 
-    // Handle input change
-    const handleInputChange = (e) => {
-      setInputValue(e.target.value);
-    };
-  
-    // Handle input removal
-    const handleRemoveInput = () => {
-      setInputValue(''); // Clear the input
-    };
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleRemoveInput = () => {
+    setInputValue('');
+  };
+
   return (
     <div
       id={`node${data.uniqueId}`}
       style={nodeStyle(isDeleted)}
-      onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
-      onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
+      className={`w-60 p-4 rounded-lg shadow-lg bg-white transition-all flex flex-col ${isDeleted ? 'hidden' : 'block'}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Flow-Start section with handles for connections */}
-      <div style={flowStartStyle}>
-        <p>
-          <MdPermMedia style={iconStyle} /> Map Node
+      {/* Header with media icon and delete button */}
+      <div className="flex justify-between items-center bg-gray-100 p-2 rounded-md border-l-4 border-green-600 mb-2">
+        <p className="text-green-700 font-semibold text-sm flex items-center">
+          <MdPermMedia className="mr-2" /> Map Node
         </p>
-        <MdDelete style={deleteIconStyle(isHovered)} onClick={handleDelete} /> {/* Delete icon */}
+        <MdDelete className={`cursor-pointer text-green-600 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} onClick={handleDelete} />
       </div>
 
-      {/* Map section */}
-      <div className='map'>
-        <img style={mapStyle} id={`node${data.uniqueId}_header`} src="https://developers.google.com/static/maps/images/landing/hero_maps_static_api.png" alt="" />
+      {/* Map image */}
+      <div>
+        <img 
+          style={mapStyle} 
+          id={`node${data.uniqueId}_header`} 
+          src="https://developers.google.com/static/maps/images/landing/hero_maps_static_api.png" 
+          alt="Map"
+        />
       </div>
 
-      {/* Textarea */}
-      <div className="textarea" style={{ textAlign: 'center' }}>
+      {/* Textarea for notes */}
+      <div style={{ textAlign: 'center' }}>
         <textarea 
-          placeholder="Enter your notes here..." // Optional placeholder text
+          placeholder="Enter your notes here..." 
           style={textareaStyle}
           id={`node${data.uniqueId}_body`}
         />
       </div>
 
-     <div className="body" style={{ position: 'relative', marginLeft: '10px' }}>
+      {/* Input with cross icon */}
+      <div style={{ position: 'relative' }}>
         <input 
           id={`node${data.uniqueId}_footer`}
           type="text" 
           style={bodyStyle} 
           value={inputValue} 
-          onChange={handleInputChange} // Handle input change
+          onChange={handleInputChange}
+          placeholder="Enter text here..."
         />
         <RxCross2 
           style={crossIconStyle} 
-          onClick={handleRemoveInput} // Handle input removal
+          onClick={handleRemoveInput}
         />
       </div>
 
-      {/* Left handle for input */}
+      {/* Handles for connecting nodes */}
       <Handle
-        type="target"
-        position={Position.Left} // Use Position.Left for proper left alignment
-        id="left-handle" // Unique ID for left handle
-        style={{ borderColor: 'green', backgroundColor: 'white' }}
-      />
-
-      {/* Right handle for output */}
-      <Handle
-        type="source"
-        position={Position.Right} // Use Position.Right for proper right alignment
-        id="right-handle" // Unique ID for right handle
-        style={{ borderColor: 'green', backgroundColor: 'white' }}
-      />
+            type="target"
+            position={Position.Left} // Use Position.Left for proper left alignment
+            id="left-handle" // Unique ID for left handle
+            className="w-2 h-2 bg-green-600 absolute left-2 top-1/2 transform -translate-y-1/2"
+          />
+       <Handle
+            type="source"
+            position={Position.Right} // Use Position.Right for proper right alignment
+            id="right-handle" // Unique ID for right handle
+            className="w-2 h-2 bg-green-600 absolute right-2 top-1/2 transform -translate-y-1/2"
+          />
     </div>
   );
 };
