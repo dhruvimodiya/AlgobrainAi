@@ -26,7 +26,7 @@ const ImageNode = ({ data, nodeId }) => {
 
     // Trigger file input dialog
     const triggerFileInput = () => {
-        document.getElementById(`node${data.uniqueId}_header`).click();
+        document.getElementById(`node${data.uniqueId}_body`).click();
     };
 
     // Handle node delete
@@ -67,7 +67,7 @@ const ImageNode = ({ data, nodeId }) => {
             {/* Hidden file input for selecting an image */}
             <input
                 type="file"
-                id={`node${data.uniqueId}_header`} // Use nodeId for unique file input
+                id={`node${data.uniqueId}_body`} // Use nodeId for unique file input
                 className="hidden"
                 accept="image/*"
                 onChange={handleImageUpload}
