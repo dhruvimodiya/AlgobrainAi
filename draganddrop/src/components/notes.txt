@@ -14,7 +14,7 @@ console.log(JSON.stringify(kb),null,2)
 
 
 const kb = {
-    "start": {
+    1: {
         type: 'interactive',//text,imae,video
         data: {
             interactiveType: "button",
@@ -26,7 +26,7 @@ const kb = {
                     {
                         type: "reply",
                         reply: {
-                            id: "information",
+                            id: "2",
                             title: "More Information"
                         }
                     }
@@ -34,7 +34,7 @@ const kb = {
             }
         }
     },
-    "information": {
+    2: {
         type: 'interactive',
         data: {
             interactiveType: "button",
@@ -46,21 +46,21 @@ const kb = {
                     {
                         type: "reply",
                         reply: {
-                            id: "about",
+                            id: "3",
                             title: "About Us"
                         }
                     },
                     {
                         type: "reply",
                         reply: {
-                            id: "ourcompany",
+                            id: "4",
                             title: "Our Company"
                         }
                     },
                     {
                         type: "reply",
                         reply: {
-                            id: "contact",
+                            id: "5",
                             title: "Contact"
                         }
                     }
@@ -68,7 +68,7 @@ const kb = {
             }
         }
     },
-    "ourcompany": {
+    "4": {
         type: 'actionUrl',
         data: {
             header: {
@@ -85,7 +85,7 @@ const kb = {
             url: "https://algobrainai.com/"
         }
     },
-    "contact": {
+    "5": {
         type: 'interactive',
         data: {
             interactiveType: "button",
@@ -97,14 +97,14 @@ const kb = {
                     {
                         type: "reply",
                         reply: {
-                            id: "poneNumber",
+                            id: "6",
                             title: "Call Us"
                         }
                     },
                     {
                         type: "reply",
                         reply: {
-                            id: "location",
+                            id: "7",
                             title: "Address"
                         }
                     }
@@ -112,7 +112,7 @@ const kb = {
             }
         }
     },
-    "poneNumber": {
+    "6": {
         type: "contact",
         data: {
             contacts: [
@@ -132,7 +132,7 @@ const kb = {
             ]
         }
     },
-    "location": {
+    "7": {
         type: 'location',
         data: {
             latitude: 21.141753,

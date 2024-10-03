@@ -390,7 +390,7 @@ const InteractiveNode = ({ data }) => {
         type="target"
         position={Position.Left}
         style={{
-          backgroundColor: "white",
+          backgroundColor: "green",
           fontSize: "15px",
           position: "absolute",
           left: "1px",

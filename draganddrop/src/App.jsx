@@ -59,6 +59,7 @@ const App = () => {
               { type: "Interactive", icon: <MdPermMedia />, label: "Interactive" },
               { type: "MapNode", icon: <FaLocationDot />, label: "Location" },
               { type: "ListNode", icon: <FaImage />, label: "List" },
+              { type: "poneNumber", icon: <FaImage />, label: "PhoneNumber" },
             ].map((item, index) => (
               <div key={index} style={{ textAlign: "center" }}>
                 <DragItem type={item.type} name={item.icon} />

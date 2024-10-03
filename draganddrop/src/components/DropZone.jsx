@@ -21,6 +21,7 @@ import PdfNode from './PdfNode';
 import ImageNode from './ImageNode';
 import ListNode from './ListNode';
 import CustomEdge from './CustomEdge';
+import poneNumber from './poneNumber';
 
 // Define custom node types
 const nodeTypes = {
@@ -35,6 +36,7 @@ const nodeTypes = {
   PdfNode: PdfNode,
   ImageNode: ImageNode,
   ListNode: ListNode,
+  poneNumber:poneNumber
 };
 
 const edgeTypes = {
@@ -240,14 +242,37 @@ const handlePrintDroppedItems = (id) => {
         type: selectedNode.type,
     };
 
-    if (selectedNode.type === "Text" || selectedNode.type === "FlowStart" || selectedNode.type === "ImageNode" || selectedNode.type === "VideoNode" || selectedNode.type === "PdfNode" || selectedNode.type === "MapNode") {
+    if (selectedNode.type === "Text" || selectedNode.type === "FlowStart" || selectedNode.type === "ImageNode" || selectedNode.type === "VideoNode" || selectedNode.type === "PdfNode" || selectedNode.type === "MapNode"||selectedNode.type === "poneNumber") {
         const nodeBodyElement = document.getElementById(`node${selectedNode.id}_body`);
         nodeEl.body = nodeBodyElement ? nodeBodyElement.value || null : null;
 
         if (selectedNode.type === "MapNode") {
-            const nodeFooterElement = document.getElementById(`node${selectedNode.id}_footer`);
-            nodeEl.footer = nodeFooterElement ? nodeFooterElement.value || null : null;
+          const nodeheaderElement = document.getElementById(`node${selectedNode.id}_header`);
+          nodeEl.header = nodeheaderElement ? nodeheaderElement.value || null : null;
+        
+          const nodeBodyElement = document.getElementById(`node${selectedNode.id}_body`);
+          nodeEl.body = nodeBodyElement ? nodeBodyElement.value || null : null;
+        
+          const nodesubBodyElement = document.getElementById(`node${selectedNode.id}_subbody`);
+          nodeEl.subbody = nodesubBodyElement ? nodesubBodyElement.value || null : null;  
+        
+          const nodeFooterElement = document.getElementById(`node${selectedNode.id}_footer`);
+          nodeEl.footer = nodeFooterElement ? nodeFooterElement.value || null : null;
         }
+        if (selectedNode.type === "poneNumber") {
+          const nodeHeaderElement = document.getElementById(`node${selectedNode.id}_header`);
+          nodeEl.header = nodeHeaderElement ? nodeHeaderElement.value || null : null;
+        
+          const nodeBodyElement = document.getElementById(`node${selectedNode.id}_body`);
+          nodeEl.body = nodeBodyElement ? nodeBodyElement.value || null : null;
+        
+          const nodeSubBodyElement = document.getElementById(`node${selectedNode.id}_subbody`);
+          nodeEl.subbody = nodeSubBodyElement ? nodeSubBodyElement.value || null : null;
+        
+          const nodeFooterElement = document.getElementById(`node${selectedNode.id}_footer`);
+          nodeEl.footer = nodeFooterElement ? nodeFooterElement.value || null : null;
+        }        
+        
 
         if (selectedNode.type === "ImageNode") {
             const nodeHeaderImg = document.getElementById(`node${selectedNode.id}_header`);
@@ -269,7 +294,7 @@ const handlePrintDroppedItems = (id) => {
         const buttons = []; 
 
         // Assuming a maximum of 3 buttons
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 10; i++) {
             const buttonElement = document.getElementById(`node${selectedNode.id}_button${i}`);
             if (buttonElement) {
                 let buttonVal = {};
@@ -334,6 +359,148 @@ const handlePrintDroppedItems = (id) => {
     nodes.forEach((node,index) => {
       handlePrintDroppedItems(node.id); // Print each node based on its id
     });
+
+    let stepCounter = 1; // Initialize step counter for all dropped items
+
+    // Initialize an empty object to hold the final merged data
+    const mergedData = {};
+
+    nodes.forEach((node) => {
+        // Get the node-specific data from allNodeData
+        const nodeData = allNodeData[node.id] || {};
+      console.log("node Data ----------------:",nodeData)
+        // Get the connections for the current node from connectionsRef
+        // const connections = connectionsRef.current[node.id]?.connectedTo || [];
+
+        // Create a dynamic output structure based on node type
+        const dynamicOutput = {
+            types: node.type, // node type (interactive, text, etc.)
+            data: {}
+        };
+
+        // Populate data based on node type
+        switch (node.type) {
+          case 'Interactive':
+            let buttons = [];
+            for (let i = 0; i < 3; i++) {
+              if (nodeData.button[i]) {//
+                buttons.push({
+                  type: nodeData.button[i].head || "Default subheader",
+                  label: nodeData.button[i].body || "Default subbody",
+                  action: nodeData.button[i].footer || "Default subfooter",
+                });
+              }
+            }
+        
+            dynamicOutput.data = {
+              body: {
+                header: nodeData.url || "default-image-url.png",
+                body: nodeData.body || "Default body text", // Example default text
+                footer: nodeData.footer || "Default footer text" // Example default text
+              },
+              action: {
+                button: buttons
+              }
+            };
+        
+                break;
+            case 'Text':
+                dynamicOutput.data = {
+                    body: {
+                        text: nodeData.body || "Default text content"
+                    }
+                };
+                break;
+            case 'ImageNode':
+                dynamicOutput.data = {
+                    url: nodeData.url || "default-image-url.png", // Example default URL
+                    alt: nodeData.alt || "Default Alt Text"
+                };
+                break;
+            case 'FlowStart':
+              dynamicOutput.data = {
+                body: {
+                    text: nodeData.body || "Default text content"
+                }
+            };
+                break;
+            case 'VideoNode':
+                dynamicOutput.data = {
+                    url: nodeData.url || "default-video-url.mp4", // Example default URL
+                    description: nodeData.description || "Default Video Description"
+                };
+                break;
+            case 'PdfNode':
+                dynamicOutput.data = {
+                    pdf: nodeData.url || "default-video-url.mp4", // Example default URL
+                };
+                break;
+            case 'MapNode':
+                  dynamicOutput.data = {
+                    body: {
+                      latitude: nodeData.header || "Default header text",
+                      longitude: nodeData.body || "Default body text", // Example default text
+                      name: nodeData.subbody || "Default body text", // Example default text
+                      address: nodeData.footer || "Default footer text" // Example default text
+                    },
+                  };
+              
+                      break;
+                      case 'poneNumber':
+                        dynamicOutput.data = {
+                          body: {
+                            formatted_name: nodeData.header || "Default formatted name",
+                            first_name: nodeData.body || "Default first name",
+                            last_name: nodeData.subbody || "Default last name",
+                            phone: nodeData.footer || "Default phone number"
+                          }
+                        };
+                        break;
+                
+            case 'ListNode':
+            let Listbutton = [];
+            for (let i = 0; i < 3; i++) {
+              if (nodeData.button[i]) {//
+                Listbutton.push({
+                  label: nodeData.button[i].body || "Default subbody",
+                  action: nodeData.button[i].footer || "Default subfooter",
+                });
+              }
+            }
+        
+            dynamicOutput.data = {
+              body: {
+                header: nodeData.url || "default-image-url.png",
+                body: nodeData.body || "Default body text", // Example default text
+                footer: nodeData.footer || "Default footer text" // Example default text
+              },
+              action: {
+                button: Listbutton
+              }
+            };
+        
+                break;
+            // Add more cases as needed for different node types
+            default:
+                dynamicOutput.data = {
+                    message: "Unknown node type"
+                };
+                break;
+        }
+
+        // Include step and connections
+        // dynamicOutput.data.connections = connections;
+
+        // Add the dynamic output to mergedData using node label as key
+        mergedData[node.data.label] = dynamicOutput;
+
+        // Increment stepCounter for the next node
+        stepCounter++;
+    });
+
+    // Print the final merged JSON object
+    console.log("kb -", JSON.stringify(mergedData, null, 2));
+  
   };
 
   return (
@@ -362,10 +529,6 @@ const handlePrintDroppedItems = (id) => {
 >
   Print All Dropped Items
 </button>
-
-
-
-
       <ReactFlow
         nodes={nodes}
         edges={edges}

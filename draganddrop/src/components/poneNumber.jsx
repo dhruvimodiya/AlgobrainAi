@@ -48,7 +48,7 @@ const bodyStyle = {
 };
 
 
-const MapNode = ({ data }) => {
+const poneNumber = ({ data }) => {
   const [isDeleted, setIsDeleted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -84,7 +84,7 @@ const MapNode = ({ data }) => {
       {/* Textarea for notes */}
       <div style={{ textAlign: 'center' }}>
         <textarea 
-          placeholder="Enter latitude here..." 
+          placeholder="Enter formatted_name here..." 
           style={textareaStyle}
           id={`node${data.uniqueId}_header`}
         />
@@ -96,9 +96,7 @@ const MapNode = ({ data }) => {
           id={`node${data.uniqueId}_body`}
           type="text" 
           style={bodyStyle} 
-          // value={inputValue} 
-          // onChange={handleInputChange}
-          placeholder="Enter longitude here..."
+          placeholder="Enter first_name here..."
         />
       </div>
       <div style={{ position: 'relative' }}>
@@ -108,7 +106,7 @@ const MapNode = ({ data }) => {
           style={bodyStyle} 
           // value={inputValue} 
           // onChange={handleInputChange}
-          placeholder="Enter name here..."
+          placeholder="Enter  last_name here..."
         />
       </div>
       <div style={{ position: 'relative' }}>
@@ -118,7 +116,7 @@ const MapNode = ({ data }) => {
           style={bodyStyle} 
           // value={inputValue} 
           onChange={handleInputChange}
-          placeholder="Enter address here..."
+          placeholder="Enter phone here..."
         />
       </div>
 
@@ -139,4 +137,4 @@ const MapNode = ({ data }) => {
   );
 };
 
-export default MapNode;
+export default poneNumber;
